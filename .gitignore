@@ -4,3 +4,6 @@ Temp
 .vscode
 obj
 UserSettings
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+UnityProject.sln
