@@ -1,4 +1,4 @@
-Shader "XingFei/Effect/Ice"
+Shader "Custom/Effect/Ice"
 {
     Properties
     {
