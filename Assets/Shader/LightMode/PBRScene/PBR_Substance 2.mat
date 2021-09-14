@@ -43,6 +43,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FallDustMainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FallDustNormal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FallDustPbrParam:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _LUT:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -89,31 +101,45 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BlendHeight: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EmissionIntensity: 0
+    - _FallDustColorBlend: 1
+    - _FallDustMetallic: 0
+    - _FallDustNormalIntensity: 0
+    - _FallDustRoughness: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 1
+    - _HeightDepth: 0
+    - _HeightScale: 0
+    - _MaxSample: 4
+    - _Metallic: 0
+    - _MinSample: 4
     - _Mode: 0
+    - _NormalIntensity: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Roughness: 0.3
+    - _PomScale: 0
+    - _Roughness: 1
+    - _SectionSteps: 4
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - _fallDustEmissionIntensity: 0
     - _m: 0
     - _pow: 1
     - _r: 0
     - _test: 1
     m_Colors:
-    - _BaseColor: {r: 0.76784444, g: 0.8018868, b: 0.78719056, a: 0}
+    - _BaseColor: {r: 1, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FallDustColor: {r: 1, g: 1, b: 1, a: 1}
     - _c: {r: 0.74746037, g: 0.9716981, b: 0.36209506, a: 0}
   m_BuildTextureStacks: []

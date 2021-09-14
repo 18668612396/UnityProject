@@ -152,7 +152,7 @@ Shader "Custom/PBR_Scene"
                 pbr.baseColor = var_MainTex.rgb * _BaseColor.rgb;
                 pbr.emission  = lerp(0,var_MainTex.rgb * max(0.0,_EmissionIntensity),var_PbrParam.a);
                 pbr.normal    = lerp(float4(0.5,0.5,1,1),var_Normal,_NormalIntensity);//A通道为高度图
-                pbr.metallic  = max(_Metallic,var_PbrParam.r);
+                pbr.metallic  = min(_Metallic,var_PbrParam.r);
                 pbr.roughness = _Roughness*var_PbrParam.g;
                 //Lightmap相关
                 #ifdef LIGHTMAP_ON

@@ -8,11 +8,10 @@ public class VegetationShaderGUI : ShaderGUI
     MaterialProperty _MainTexProp;
     MaterialProperty _CutOffProp;
     MaterialProperty _TopColorProp;
-    Vector4 Color01 = Color.white;
     MaterialProperty _DownColorProp;
-    Vector4 Color02 = Color.white;
     MaterialProperty _GradientVectorProp;
-    Vector4 _Gradient;
+
+    Vector4 _Gradient = new Vector4(-10.0f, 10.0f, 0.0f, 0.0f);
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
 
     {
@@ -21,6 +20,7 @@ public class VegetationShaderGUI : ShaderGUI
         LoadParam();
         DrawGUI(materialEditor);
         SaveParam();
+        Other(materialEditor);//其他额外参数绘制
     }
 
     private void MaterialParam(MaterialProperty[] properties)
@@ -30,16 +30,27 @@ public class VegetationShaderGUI : ShaderGUI
         _TopColorProp = FindProperty("_TopColor", properties);
         _DownColorProp = FindProperty("_DownColor", properties);
         _GradientVectorProp = FindProperty("_GradientVector", properties);
+
     }
 
     private void DrawGUI(MaterialEditor materialEditor)
     {
+        EditorGUILayout.LabelField("参数属性", EditorStyles.boldLabel);
         materialEditor.TexturePropertySingleLine(new GUIContent("MainTex"), _MainTexProp);//绘制主纹理GUI
+        materialEditor.RangeProperty(_CutOffProp, "CutOff");
         EditorGUILayout.BeginHorizontal();
-        _Gradient.z = EditorGUILayout.FloatField(_Gradient.z);//绘制渐变高度GUI
-        Color01 = EditorGUILayout.ColorField(Color01);//绘制渐变颜色
-        EditorGUILayout.MinMaxSlider(ref _Gradient.y, ref _Gradient.x, 0.0f, 1.0f);
-        EditorGUILayout.ColorField(Color02);
+        EditorGUILayout.LabelField("渐变范围  ", EditorStyles.boldLabel, GUILayout.MaxWidth(70));
+        // _Gradient.z = EditorGUILayout.FloatField(_Gradient.z, GUILayout.MaxWidth(50));//绘制渐变高度GUI
+        _TopColorProp.colorValue = EditorGUILayout.ColorField(_TopColorProp.colorValue, GUILayout.MaxWidth(50));
+        EditorGUILayout.MinMaxSlider(ref _Gradient.x, ref _Gradient.y, -10.0f, 20.0f);
+        _DownColorProp.colorValue = EditorGUILayout.ColorField(_DownColorProp.colorValue, GUILayout.MaxWidth(50));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("AO范围  ", EditorStyles.boldLabel, GUILayout.MaxWidth(70));
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.FloatField(_Gradient.z,GUILayout.MaxWidth(50));
+          EditorGUILayout.MinMaxSlider(ref _Gradient.z, ref _Gradient.w, 0.0f, 1.0f);
+        EditorGUILayout.FloatField(_Gradient.w,GUILayout.MaxWidth(50));
         EditorGUILayout.EndHorizontal();
 
     }
@@ -47,14 +58,21 @@ public class VegetationShaderGUI : ShaderGUI
     private void LoadParam()
     {
         _Gradient = _GradientVectorProp.vectorValue;
-        Color01 = _TopColorProp.vectorValue;
-        Color02 = _DownColorProp.vectorValue;
+
     }
     private void SaveParam()
     {
         _GradientVectorProp.vectorValue = _Gradient;
-        // _TopColorProp.vectorValue = Color01;
-        // _DownColorProp.vectorValue = Color02;
+    }
+
+    private void Other(MaterialEditor materialEditor)
+    {
+        EditorGUILayout.Space(10);
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        materialEditor.RenderQueueField();
+        materialEditor.EnableInstancingField();
+        materialEditor.DoubleSidedGIField();
+        EditorGUILayout.EndVertical();
     }
 
 }

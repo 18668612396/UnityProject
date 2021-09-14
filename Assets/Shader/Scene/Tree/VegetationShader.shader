@@ -3,10 +3,11 @@ Shader "Custom/VegetationShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _TopColor("TopColor",Color) = (1.0,1.0,1.0,1.0)
-        _DownColor("DownColor",Color) = (0.0,0.0,0.0,0.0)
+        [HDR]_TopColor("TopColor",Color) = (1.0,1.0,1.0,1.0)
+        [HDR] _DownColor("DownColor",Color) = (0.0,0.0,0.0,0.0)
         _GradientVector("_GradientVector",vector) = (0.0,1.0,0.0,0.0)
         _CutOff("Cutoff",Range(0.0,1.0)) = 0.0
+        
         
     }
     SubShader
@@ -18,10 +19,16 @@ Shader "Custom/VegetationShader"
 
         uniform sampler2D _MainTex;
         uniform float _CutOff;
-
-        uniform float _TopColor;
-        uniform float _DownColor;
+        uniform float4 _TopColor;
+        uniform float4 _DownColor;
         uniform float4 _GradientVector;
+        uniform float _OcclusionIntensity;
+        struct Vegetation
+        {
+            float3 albedo;
+            float3 shadow;
+            float3 occlustion;
+        };
         ENDCG
         Pass
         {
@@ -35,14 +42,17 @@ Shader "Custom/VegetationShader"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
+            #include "Lighting.cginc"
             #include "UnityCG.cginc"
             #include "AutoLight.cginc"
             #pragma multi_compile_fwdbase
+            
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float4 color:COLOR;
+                float3 normal:NORMAL;
             };
 
             struct v2f
@@ -50,6 +60,8 @@ Shader "Custom/VegetationShader"
                 float2 uv : TEXCOORD0;
                 float4 pos : SV_POSITION;
                 float4 localPos:TEXCOORD2;
+                float4 vertexColor:COLOR;
+                float3 worldNormal:NORMAL;
                 LIGHTING_COORDS(98,99)
             };
 
@@ -60,22 +72,42 @@ Shader "Custom/VegetationShader"
                 UNITY_INITIALIZE_OUTPUT(v2f,o);//初始化顶点着色器
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.localPos = mul(unity_ObjectToWorld,v.vertex);
+                o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.uv = v.uv;
+                o.vertexColor = v.color;
                 TRANSFER_VERTEX_TO_FRAGMENT(o);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float shadow = SHADOW_ATTENUATION(i);
+                
                 //采样贴图
                 fixed4 var_MainTex = tex2D(_MainTex, i.uv);
                 //准备向量
                 float4 localPos = i.localPos;
-                
+                float3 lightDir = normalize(_WorldSpaceLightPos0).xyz;
+                float3 normalDir = normalize(i.worldNormal);
 
+                //点乘计算
+                float NdotL = saturate(dot(normalDir,lightDir));
+                //基础颜色Albedo
+                float Gradient = saturate(smoothstep(_GradientVector.x,_GradientVector.y,localPos.y  + _GradientVector.z));
+                float3 Albedo  = lerp(_DownColor,_TopColor,Gradient) * var_MainTex.g;
+                //Occlusion
+                float Occlustion = lerp(_GradientVector.z,_GradientVector.w,i.vertexColor.r);
+                //主光源影响
+                float shadow = SHADOW_ATTENUATION(i);
+                float3 lightContribution = Albedo * _LightColor0.rgb * NdotL * shadow;
+                //环境光源影响
+                float3 Ambient = ShadeSH9(float4(normalDir,1));
+                float3 indirectionContribution = Ambient * Albedo * Occlustion;
+                //光照合成
+                float3 finalRGB = lightContribution + indirectionContribution;
+                //AlphaTest
                 clip(var_MainTex.r - _CutOff);
-                return i.localPos.y;
+                //输出
+                return finalRGB.rgbb;
             }
             ENDCG
         }
