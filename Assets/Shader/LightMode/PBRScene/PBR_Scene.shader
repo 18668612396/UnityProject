@@ -109,7 +109,7 @@ Shader "Custom/PBR_Scene"
             uniform float4 _BaseColor;
             uniform float _Metallic,_Roughness,_EmissionIntensity;
 
-            float _NormalIntensity;
+            uniform float _NormalIntensity;
 
             uniform int _FallDust;
             uniform int _Parallax;

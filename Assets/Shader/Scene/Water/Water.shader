@@ -3,7 +3,7 @@ Shader "ForBaseShader/Water"
 {
     Properties
     {
-        _Float0("Float 0", Float) = 1
+        _WaveRadius("WaveRadius 0", Range(0.0,10.0)) = 1
         _MainTex("_MainTex",2D) = "white"{}
     }
     
@@ -15,6 +15,8 @@ Shader "ForBaseShader/Water"
         CGINCLUDE
         sampler2D _MainTex;
         float4 _MainTex_ST;
+
+        uniform float _WaveRadius;
         ENDCG
         Pass
         {
@@ -38,7 +40,7 @@ Shader "ForBaseShader/Water"
 
             UNITY_DECLARE_DEPTH_TEXTURE( _CameraDepthTexture );
 
-            uniform float _Float0;
+            
 
             
             v2f vert ( appdata v )
@@ -59,11 +61,11 @@ Shader "ForBaseShader/Water"
                 float4 screenPos = i.scrPos / i.scrPos.w;
 
                 float screenDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE( _CameraDepthTexture, screenPos.xy ));
-                float distanceDepth =1 - saturate(abs((screenDepth - LinearEyeDepth( screenPos.z )) / ( _Float0)));
-                float x = cross(distanceDepth,normalize(i.worldPos).y);
-                float4 var_MainTex = tex2D(_MainTex,float2(distanceDepth,x ) * _MainTex_ST);
-                return var_MainTex;
-                return float4(distanceDepth,x,1,1);
+                float distanceDepth = 1 - saturate(abs((screenDepth - LinearEyeDepth( screenPos.z )) * ( _WaveRadius)));
+                float x = sin(cross(i.worldPos.x,distanceDepth));
+                float4 var_MainTex = tex2D(_MainTex,float2(distanceDepth,i.worldPos.x) * _MainTex_ST + float2(-_Time.x,0)) * distanceDepth;
+                
+                return distanceDepth;
             }
             ENDCG
         }
