@@ -58,7 +58,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
-    - _CutOff: 0.309
+    - _CutOff: 0.5
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -77,8 +77,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DownColor: {r: 0.99215686, g: 0.55993164, b: 0.30196083, a: 0}
+    - _DownColor: {r: 1, g: 0.59442097, b: 0.3803922, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GradientVector: {r: 1.8970797, g: 13.297878, b: 0.3461122, a: 0.7380278}
-    - _TopColor: {r: 1, g: 0.8786919, b: 0.2216981, a: 1}
+    - _GradientVector: {r: -10, g: 1.400795, b: 0.6700562, a: 1}
+    - _TopColor: {r: 1.319508, g: 0.6161546, b: 0.35477334, a: 1}
   m_BuildTextureStacks: []

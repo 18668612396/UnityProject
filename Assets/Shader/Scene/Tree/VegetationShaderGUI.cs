@@ -36,14 +36,14 @@ public class VegetationShaderGUI : ShaderGUI
     private void DrawGUI(MaterialEditor materialEditor)
     {
         EditorGUILayout.LabelField("参数属性", EditorStyles.boldLabel);
-        materialEditor.TexturePropertySingleLine(new GUIContent("MainTex"), _MainTexProp);//绘制主纹理GUI
-        materialEditor.RangeProperty(_CutOffProp, "CutOff");
+        materialEditor.TexturePropertySingleLine(new GUIContent("MainTex                    CutOff"), _MainTexProp,_CutOffProp);//绘制主纹理GUI
+       // materialEditor.RangeProperty(_CutOffProp, "CutOff");
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("渐变范围  ", EditorStyles.boldLabel, GUILayout.MaxWidth(70));
         // _Gradient.z = EditorGUILayout.FloatField(_Gradient.z, GUILayout.MaxWidth(50));//绘制渐变高度GUI
-        _TopColorProp.colorValue = EditorGUILayout.ColorField(_TopColorProp.colorValue, GUILayout.MaxWidth(50));
+        _TopColorProp.colorValue = EditorGUILayout.ColorField(new GUIContent(""),_TopColorProp.colorValue,true,true,true, GUILayout.MaxWidth(50));//上半部分颜色
         EditorGUILayout.MinMaxSlider(ref _Gradient.x, ref _Gradient.y, -10.0f, 20.0f);
-        _DownColorProp.colorValue = EditorGUILayout.ColorField(_DownColorProp.colorValue, GUILayout.MaxWidth(50));
+        _DownColorProp.colorValue = EditorGUILayout.ColorField(new GUIContent(""),_DownColorProp.colorValue,true,true,true, GUILayout.MaxWidth(50));//下半部分颜色
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.LabelField("AO范围  ", EditorStyles.boldLabel, GUILayout.MaxWidth(70));
