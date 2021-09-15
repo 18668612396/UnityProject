@@ -1,8 +1,12 @@
 #ifndef SHADER_FUNCTION_INCLUDE
     #define SHADER_FUNCTION_INCLUDE
-    //Noise
-    
 
+    
+    #include "AutoLight.cginc"
+    #include "Lighting.cginc"
+    #include "UnityCG.cginc"
+
+    //Noise
     float3 mod2D289( float3 x ) { return x - floor( x * ( 1.0 / 289.0 ) ) * 289.0; }
     float2 mod2D289( float2 x ) { return x - floor( x * ( 1.0 / 289.0 ) ) * 289.0; }
     float3 permute( float3 x ) { return mod2D289( ( ( x * 34.0 ) + 1.0 ) * x ); }
@@ -30,11 +34,14 @@
         g.yz = a0.yz * x12.xz + h.yz * x12.yw;
         return 130.0 * dot( m, g );
     }
-
+    //重映射
     float remap(float In ,float InMin ,float InMax ,float OutMin, float OutMax)
     {
         return OutMin + (In - InMin) * (OutMax - OutMin) / (InMax - InMin);
     }
+
+    //风力动画
+    uniform int   _WindAnimToggle;
     uniform float  _WindDensity;
     uniform float3 _WindDirection;
     uniform float  _WindSpeedFloat;
@@ -42,15 +49,48 @@
     uniform float  _WindStrengthFloat;
     void WindAnimation(inout float4 vertex, float4 vertexColor)
     {   
+        vertex.xyz = vertex.xyz;
         float3 worldPos = mul(unity_ObjectToWorld,vertex);
         float3 windDirection = float3(_WindDirection.xy,0.0);
         float2 panner = (1.0 * _Time.y * (windDirection * _WindSpeedFloat * 10).xy + worldPos.xy);
         float SimplePerlinNoise = PerlinNoise(panner * _WindTurbulenceFloat / 10 * _WindDensity) * 0.5 + 0.5;
-        vertex.xyz += mul(unity_WorldToObject,float4(_WindDirection * (SimplePerlinNoise * _WindStrengthFloat),0.0)) * vertexColor.a;
+        if(_WindAnimToggle > 0)
+        {
+            vertex.xyz += mul(unity_WorldToObject,float4(_WindDirection * (SimplePerlinNoise * _WindStrengthFloat),0.0)) * vertexColor.a;
+        }
+        
         vertex.w = 1.0;
         
     }
-    
     #define WIND_ANIM(v)  WindAnimation(v.vertex,v.color);
 
+    //云阴影
+    uniform float _CloudShadowSize;
+    uniform vector _CloudShadowRadius;
+    uniform float _CloudShadowSpeed;
+    float CloudShadow(float3 worldPos)
+    {
+        
+        float Shadow = PerlinNoise(worldPos.xz * _CloudShadowSize * _CloudShadowRadius.xy + _Time.y * _WindDirection * _CloudShadowSpeed);
+        
+        return 1 - saturate(Shadow);
+    }
+    #define CLOUD_SHADOW(i)  CloudShadow(i.worldPos);
+
+    //植被交互
+
+    uniform float _InteractRadius;
+    uniform float _InteractIntensity;
+    uniform float3 _PlayerPos;
+    void GrassInteract(float2 uv,float4 vertexColor,inout float4 vertex)
+    {
+        float3 worldPos = mul(unity_ObjectToWorld,vertex).xyz;
+        float interactDistance = distance(_PlayerPos.xyz + float3(0,1.5,0),worldPos);
+        float interactDown = saturate((1 - interactDistance + _InteractRadius) * uv.y * _InteractIntensity);
+        float3 interactDirection = normalize(worldPos.xyz - _PlayerPos.xyz);
+        worldPos.xyz = interactDirection * interactDown * vertexColor.a;
+        worldPos.y*= 0.2;
+        vertex.xyz += mul(unity_WorldToObject,worldPos);
+    }
+    #define GRASS_INTERACT(v) GrassInteract(v.uv,v.color,v.vertex);
 #endif

@@ -172,6 +172,11 @@ public class PBR_ShaderGUI : ShaderGUI
         
     }
 
+    private void WindGUI(MaterialEditor materialEditor)
+    {
+
+    }
+
     private void Other(MaterialEditor materialEditor)
     {
         EditorGUILayout.Space(10);

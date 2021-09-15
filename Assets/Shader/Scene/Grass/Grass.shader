@@ -7,6 +7,7 @@ Shader "Custom/GrassShader"
         [HDR] _DownColor("DownColor",Color) = (0.0,0.0,0.0,0.0)
         _GradientVector("_GradientVector",vector) = (0.0,1.0,0.0,0.0)
         _CutOff("Cutoff",Range(0.0,1.0)) = 0.0
+        _WindAnimToggle("_WindAnimToggle",int) = 1
         
         
     }
@@ -63,6 +64,7 @@ Shader "Custom/GrassShader"
                 float4 localPos:TEXCOORD2;
                 float4 vertexColor:COLOR;
                 float3 worldNormal:NORMAL;
+                float3 worldPos :TEXCOORD3;
                 
                 LIGHTING_COORDS(98,99)
             };
@@ -72,12 +74,16 @@ Shader "Custom/GrassShader"
             {
                 v2f o;
                 UNITY_INITIALIZE_OUTPUT(v2f,o);//初始化顶点着色器
-                WIND_ANIM(v)
+                GRASS_INTERACT(v);
+                WIND_ANIM(v);
+                
+                o.worldPos = mul(unity_ObjectToWorld,v.vertex);
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.localPos = mul(unity_ObjectToWorld,v.vertex);
                 o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.uv = v.uv;
                 o.vertexColor = v.color;
+                
                 TRANSFER_VERTEX_TO_FRAGMENT(o);
                 return o;
             }
@@ -101,7 +107,7 @@ Shader "Custom/GrassShader"
                 float Occlustion = lerp(_GradientVector.z,_GradientVector.w,i.vertexColor.r);
                 //主光源影响
                 float shadow = SHADOW_ATTENUATION(i);
-                float3 lightContribution = Albedo * _LightColor0.rgb * NdotL * shadow;
+                float3 lightContribution = Albedo * _LightColor0.rgb * NdotL * shadow * CLOUD_SHADOW(i);
                 //环境光源影响
                 float3 Ambient = ShadeSH9(float4(normalDir,1));
                 float3 indirectionContribution = Ambient * Albedo * Occlustion;
@@ -110,6 +116,8 @@ Shader "Custom/GrassShader"
                 //AlphaTest
                 clip(var_MainTex.g - _CutOff);
                 //输出
+
+                
                 return finalRGB.rgbb;
             }
             ENDCG
@@ -126,7 +134,6 @@ Shader "Custom/GrassShader"
             #pragma multi_compile_shadowcaster
             #include "UnityCG.cginc"
             #include "../../ShaderFunction.hlsl"
-
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -146,7 +153,9 @@ Shader "Custom/GrassShader"
             v2f vert (appdata v)
             {
                 v2f o;
+                GRASS_INTERACT(v);
                 WIND_ANIM(v);
+                
                 o.uv = v.uv;
                 TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
                 

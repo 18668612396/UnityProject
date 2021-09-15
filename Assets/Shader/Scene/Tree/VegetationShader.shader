@@ -7,6 +7,7 @@ Shader "Custom/VegetationShader"
         [HDR] _DownColor("DownColor",Color) = (0.0,0.0,0.0,0.0)
         _GradientVector("_GradientVector",vector) = (0.0,1.0,0.0,0.0)
         _CutOff("Cutoff",Range(0.0,1.0)) = 0.0
+        _WindAnimToggle("_WindAnimToggle",int) = 1
         
         
     }
@@ -62,6 +63,7 @@ Shader "Custom/VegetationShader"
                 float4 localPos:TEXCOORD2;
                 float4 vertexColor:COLOR;
                 float3 worldNormal:NORMAL;
+                float4 worldPos:TEXCOORD3;
                 LIGHTING_COORDS(98,99)
             };
 
@@ -70,9 +72,12 @@ Shader "Custom/VegetationShader"
             {
                 v2f o;
                 UNITY_INITIALIZE_OUTPUT(v2f,o);//初始化顶点着色器
+                
                 WIND_ANIM(v)
+                GRASS_INTERACT(v);
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.localPos = mul(unity_ObjectToWorld,v.vertex);
+                o.localPos = v.vertex;
+                o.worldPos =mul(unity_ObjectToWorld,v.vertex);
                 o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.uv = v.uv;
                 o.vertexColor = v.color;
@@ -99,7 +104,7 @@ Shader "Custom/VegetationShader"
                 float Occlustion = lerp(_GradientVector.z,_GradientVector.w,i.vertexColor.r);
                 //主光源影响
                 float shadow = SHADOW_ATTENUATION(i);
-                float3 lightContribution = Albedo * _LightColor0.rgb * NdotL * shadow;
+                float3 lightContribution = Albedo * _LightColor0.rgb * NdotL * shadow * CLOUD_SHADOW(i);
                 //环境光源影响
                 float3 Ambient = ShadeSH9(float4(normalDir,1));
                 float3 indirectionContribution = Ambient * Albedo * Occlustion;
@@ -143,7 +148,9 @@ Shader "Custom/VegetationShader"
             v2f vert (appdata v)
             {
                 v2f o;
+                
                 WIND_ANIM(v);
+                GRASS_INTERACT(v);
                 o.uv = v.uv;
                 TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
                 

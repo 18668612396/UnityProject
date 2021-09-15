@@ -35,6 +35,9 @@ Shader "SceneParm_Test"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             uniform float _test;
+
+
+            uniform float3 _PlayerPos;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -50,7 +53,7 @@ Shader "SceneParm_Test"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return _test;
+                return float4(_PlayerPos,1);
             }
             ENDCG
         }

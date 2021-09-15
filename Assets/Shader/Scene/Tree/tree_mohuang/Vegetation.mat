@@ -74,11 +74,12 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _WindAnimToggle: 1
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DownColor: {r: 1.8420619, g: 0.6920057, b: 0.4431375, a: 0}
+    - _DownColor: {r: 5.985495, g: 1.7787083, b: 1.9338809, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GradientVector: {r: 0.4370396, g: 11.891883, b: 0.5824765, a: 0.7499998}
-    - _TopColor: {r: 1.9766746, g: 0.7451339, b: 0.47605774, a: 0}
+    - _GradientVector: {r: 1.0451579, g: 5.5357156, b: 0.6808876, a: 1}
+    - _TopColor: {r: 1.7207954, g: 0.82886475, b: 0.5135358, a: 0}
   m_BuildTextureStacks: []

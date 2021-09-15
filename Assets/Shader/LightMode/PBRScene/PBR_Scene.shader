@@ -33,6 +33,8 @@ Shader "Custom/PBR_Scene"
         _FallDustRoughness("FallDustRoughness",Range(0,1)) = 1
         _FallDustNormal("FallDustNormal",2D) = "bump"{}
         _FallDustNormalIntensity("FallDustNormalIntensity",Range(0,2)) = 0
+
+        [Toggle] _WindAmin("WindAmin",int) = 0
     }
     SubShader
     {
@@ -50,11 +52,8 @@ Shader "Custom/PBR_Scene"
             Blend One Zero
             
             CGPROGRAM
-            
-            #include "UnityCG.cginc"
-            #include "AutoLight.cginc"
-            #include "Lighting.cginc"
-            
+
+
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fwdbase
@@ -74,7 +73,7 @@ Shader "Custom/PBR_Scene"
             };
             #include "PBR_Scene_FallDust.HLSL"
             #include "PBR_Scene_Function.HLSL"
-            #include "../../ShaderFunction.hlsl"
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -109,9 +108,7 @@ Shader "Custom/PBR_Scene"
             uniform float4 _MainTex_ST;
             uniform float4 _BaseColor;
             uniform float _Metallic,_Roughness,_EmissionIntensity;
-
             uniform float _NormalIntensity;
-
             uniform int _FallDust;
             uniform int _Parallax;
             v2f vert (appdata v)
@@ -157,7 +154,7 @@ Shader "Custom/PBR_Scene"
                 pbr.baseColor = var_MainTex.rgb * _BaseColor.rgb;
                 pbr.emission  = lerp(0,var_MainTex.rgb * max(0.0,_EmissionIntensity),var_PbrParam.a);
                 pbr.normal    = lerp(float4(0.5,0.5,1,1),var_Normal,_NormalIntensity);//A通道为高度图
-                pbr.metallic  = max(_Metallic,var_PbrParam.r);
+                pbr.metallic  = min(_Metallic,var_PbrParam.r);
                 pbr.roughness = _Roughness*var_PbrParam.g;
 
 
@@ -169,7 +166,7 @@ Shader "Custom/PBR_Scene"
                     pbr.shadow    =  var_Lightmap.g;
                 #else
                     pbr.occlusion = var_PbrParam.b;
-                    pbr.shadow    =  SHADOW_ATTENUATION(i);
+                    pbr.shadow    =  SHADOW_ATTENUATION(i) * CLOUD_SHADOW(i);
                 #endif
 
 
@@ -193,7 +190,6 @@ Shader "Custom/PBR_Scene"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_shadowcaster
-            #include "UnityCG.cginc"
             #include "../../ShaderFunction.hlsl"
 
             struct appdata

@@ -26,8 +26,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _CutOff: 0.5
+    - _WindAnimToggle: 1
     m_Colors:
     - _DownColor: {r: 0.20784314, g: 0.021273255, b: 0.015686275, a: 1}
-    - _GradientVector: {r: 0.8043975, g: 1.3513527, b: 1, a: 1}
-    - _TopColor: {r: 0.8193417, g: 0.46429366, b: 0.25263038, a: 1}
+    - _GradientVector: {r: 0.4761696, g: 1.0231247, b: 1, a: 1}
+    - _TopColor: {r: 0.5471698, g: 0.28722727, b: 0.18325028, a: 1}
   m_BuildTextureStacks: []

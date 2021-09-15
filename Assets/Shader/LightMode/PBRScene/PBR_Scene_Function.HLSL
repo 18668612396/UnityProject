@@ -1,7 +1,7 @@
 #ifndef PBR_FUNCTION_INCLUDE
     #define PBR_FUNCTION_INCLUDE
     
-    
+    #include "../../ShaderFunction.hlsl"
 
     //PBR代码
     uniform samplerCUBE _cube;
@@ -41,21 +41,21 @@
         return F0 + fresnel * saturate(1 - roughness - F0);
     }
     //直接光镜面反射 
-    float3 DGF_Function(float NdotH,float NdotL,float NdotV,float HdotL,float roughness,float shadow,float3 F0)
+    float3 DGF_Function(float NdotH,float NdotL,float NdotV,float HdotL,float roughness,float3 F0)
     {
         float  D = D_Function(NdotH,roughness);
         float  G = G_Function(NdotL,NdotV,roughness);
         float3 F = F_Light_Function(HdotL,F0);
         float3 light_BRDF = saturate(( D * G * F ) / (4 * NdotL * NdotV + 0.001));//这里我自行修改了一下 把他限制在0-1
 
-        return light_BRDF * _LightColor0.rgb * NdotL * UNITY_PI * shadow;
+        return light_BRDF * NdotL * UNITY_PI;
     }
     //直接光照漫反射
-    float3 lightDiffuse_Function(float HdotL,float NdotL , float3 baseColor,float metallic,float shadow,float3 F0)
+    float3 lightDiffuse_Function(float HdotL,float NdotL , float3 baseColor,float metallic,float3 F0)
     {
         float3 KS = F_Light_Function(HdotL,F0);
         float3 KD = (1 - KS) * (1 - metallic);
-        return KD * baseColor * _LightColor0.rgb * NdotL * shadow; 
+        return KD * baseColor * NdotL;
     }
 
     
@@ -74,16 +74,16 @@
         return saturate(AB);
     }
     //间接光漫反射
-    float3 indirectionDiffuse_Function(float NdotV,float3 normalDir,float metallic,float3 baseColor,float roughness,float occlusion,float3 F0)
+    float3 indirectionDiffuse_Function(float NdotV,float3 normalDir,float metallic,float3 baseColor,float roughness,float3 F0)
     {
         float3 SHColor = ShadeSH9(float4(normalDir,1));
         float3 KS = F_Indir_Function(NdotV,roughness,F0);
         float3 KD = (1 - KS) * (1 - metallic);
-        return SHColor * KD * baseColor * occlusion;//这里可以乘以一个AO
+        return SHColor * KD * baseColor;//这里可以乘以一个AO
     }
 
     //间接光镜面反射
-    float3 indirectionSpec_Function(float3 reflectDir,float roughness,float NdotV,float occlusion,float3 F0)
+    float3 indirectionSpec_Function(float3 reflectDir,float roughness,float NdotV,float3 F0)
     {
         //采样环境贴图
         float mip = roughness * (1.7 - 0.7 * roughness) * UNITY_SPECCUBE_LOD_STEPS ;
@@ -94,21 +94,23 @@
         float2 LUT = LUT_Approx(roughness,NdotV);
         float3 F_IndirectionLight = F_Indir_Function(NdotV,roughness,F0);//环境菲尼尔
         float3 indirectionSpecFactor = indirectionCube.rgb  * (F_IndirectionLight * LUT.r + LUT.g);
-        return indirectionSpecFactor * occlusion;
+        return indirectionSpecFactor;
     }
     
     //计算直接光照的贡献
     float3 lightContribution(float NdotH,float NdotL,float NdotV,float HdotL,float roughness,float3 baseColor,float metallic,float shadow,float3 F0)
     {
-        return lightDiffuse_Function(HdotL,NdotL,baseColor,metallic,shadow,F0) + DGF_Function(NdotH,NdotL,NdotV,HdotL,roughness,shadow,F0);
+        float3 lightDiffuse = lightDiffuse_Function(HdotL,NdotL,baseColor,metallic,F0);
+        float3 lightSpec    = DGF_Function(NdotH,NdotL,NdotV,HdotL,roughness,F0);
+        return (lightDiffuse + lightSpec) * _LightColor0.rgb * shadow;//灯光和阴影在这里-----------------------------
     }
     
     //计算环境光照的贡献
     float3 indirectionContribution(float3 reflectDir,float3 normalDir,float NdotV,float3 baseColor,float roughness,float metallic,float occlusion,float3 F0)
     {
-        float3 indirectionDiffuse = indirectionDiffuse_Function(NdotV,normalDir,metallic,baseColor,roughness,occlusion,F0);
-        float3 indirectionSpec    = indirectionSpec_Function(reflectDir,roughness,NdotV,occlusion,F0);
-        return indirectionDiffuse + indirectionSpec;
+        float3 indirectionDiffuse = indirectionDiffuse_Function(NdotV,normalDir,metallic,baseColor,roughness,F0);
+        float3 indirectionSpec    = indirectionSpec_Function(reflectDir,roughness,NdotV,F0);
+        return (indirectionDiffuse + indirectionSpec) * occlusion;//环境遮蔽在这里---------------------------------------
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //计算自发光

@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5679747552267684818}
-  m_LocalRotation: {x: -0, y: -0.9858753, z: -0, w: 0.16748124}
+  m_LocalRotation: {x: 0, y: -0.985875, z: 0, w: 0.16748306}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a78cb13e0e6d414aa6aa587a54a7c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _WindDensity: 15
-  _WindSpeedFloat: 0.496
-  _WindTurbulenceFloat: 0.228
-  _WindStrengthFloat: 0.351
+  _WindDensity: 10
+  _WindSpeedFloat: 0.533
+  _WindTurbulenceFloat: 0.307
+  _WindStrengthFloat: 0.141

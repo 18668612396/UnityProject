@@ -112,12 +112,12 @@ Material:
     - _FallDustMetallic: 0
     - _FallDustRoughness: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0.75
+    - _Glossiness: 0
     - _GlossyReflections: 1
     - _HeightDepth: 0
     - _HeightScale: 0
     - _MaxSample: 0
-    - _Metallic: 1
+    - _Metallic: 0
     - _MinSample: 0
     - _Mode: 0
     - _OcclusionStrength: 1
