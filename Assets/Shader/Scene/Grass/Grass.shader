@@ -1,4 +1,4 @@
-Shader "Custom/VegetationShader"
+Shader "Custom/GrassShader"
 {
     Properties
     {
@@ -53,6 +53,7 @@ Shader "Custom/VegetationShader"
                 float2 uv : TEXCOORD0;
                 float4 color:COLOR;
                 float3 normal:NORMAL;
+                
             };
 
             struct v2f
@@ -62,6 +63,7 @@ Shader "Custom/VegetationShader"
                 float4 localPos:TEXCOORD2;
                 float4 vertexColor:COLOR;
                 float3 worldNormal:NORMAL;
+                
                 LIGHTING_COORDS(98,99)
             };
 
@@ -112,6 +114,7 @@ Shader "Custom/VegetationShader"
             }
             ENDCG
         }
+        
         pass
         {
             Name "ShadowCaster"
@@ -158,6 +161,8 @@ Shader "Custom/VegetationShader"
             } 
             ENDCG
         }
+        
     }
+
     CustomEditor "VegetationShaderGUI"
 }

@@ -74,6 +74,7 @@ Shader "Custom/PBR_Scene"
             };
             #include "PBR_Scene_FallDust.HLSL"
             #include "PBR_Scene_Function.HLSL"
+            #include "../../ShaderFunction.hlsl"
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -117,6 +118,7 @@ Shader "Custom/PBR_Scene"
             {
                 v2f o;
                 UNITY_INITIALIZE_OUTPUT(v2f,o);//初始化顶点着色器
+                WIND_ANIM(v);
                 o.uv = TRANSFORM_TEX(v.uv,_MainTex);
                 o.blendUV = TRANSFORM_TEX(v.uv,_FallDustMainTex);//混合贴图的UV
                 #ifndef LIGHTMAP_OFF
@@ -143,6 +145,9 @@ Shader "Custom/PBR_Scene"
                 #ifdef _PARALLAX_ON
                     uv = PBR_PARALLAX(i,_Normal);
                 #endif
+
+
+                
                 //贴图采样
                 float4 var_MainTex = tex2D(_MainTex,uv);
                 float4 var_PbrParam = tex2D(_PbrParam,uv);
@@ -152,8 +157,11 @@ Shader "Custom/PBR_Scene"
                 pbr.baseColor = var_MainTex.rgb * _BaseColor.rgb;
                 pbr.emission  = lerp(0,var_MainTex.rgb * max(0.0,_EmissionIntensity),var_PbrParam.a);
                 pbr.normal    = lerp(float4(0.5,0.5,1,1),var_Normal,_NormalIntensity);//A通道为高度图
-                pbr.metallic  = min(_Metallic,var_PbrParam.r);
+                pbr.metallic  = max(_Metallic,var_PbrParam.r);
                 pbr.roughness = _Roughness*var_PbrParam.g;
+
+
+
                 //Lightmap相关
                 #ifdef LIGHTMAP_ON
                     float3 var_Lightmap = DecodeLightmap (UNITY_SAMPLE_TEX2D(unity_Lightmap, i.lightmapUV.xy));
@@ -163,6 +171,9 @@ Shader "Custom/PBR_Scene"
                     pbr.occlusion = var_PbrParam.b;
                     pbr.shadow    =  SHADOW_ATTENUATION(i);
                 #endif
+
+
+
                 //高度融合相关
                 #ifdef _FALLDUST_ON
                     PBR_FALLDUST(i,pbr);
@@ -183,15 +194,25 @@ Shader "Custom/PBR_Scene"
             #pragma fragment frag
             #pragma multi_compile_shadowcaster
             #include "UnityCG.cginc"
+            #include "../../ShaderFunction.hlsl"
+
+            struct appdata
+            {
+                float4 vertex : POSITION;
+                float4 color:COLOR;
+                float3 normal:NORMAL;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
 
             struct v2f 
             {
                 V2F_SHADOW_CASTER;
             };
 
-            v2f vert (appdata_base v)
+            v2f vert (appdata v)
             {
                 v2f o;
+                WIND_ANIM(v);
                 TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
                 return o;
             }

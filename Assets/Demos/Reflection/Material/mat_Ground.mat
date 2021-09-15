@@ -24,15 +24,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FallDustMainTex:
-        m_Texture: {fileID: 2800000, guid: 19fc462b5b27ff74abc7136b4a79017f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - _FallDustNormal:
-        m_Texture: {fileID: 2800000, guid: c67a0e8c2d567e244b4f8ed44566d022, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FallDustPbrParam:
-        m_Texture: {fileID: 2800000, guid: fe9b652f2a95fd7449bf0170e817108e, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -70,5 +70,5 @@ Material:
     - _fallDustEmissionIntensity: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FallDustColor: {r: 1, g: 1, b: 1, a: 0}
+    - _FallDustColor: {r: 0.6037736, g: 0.30201626, b: 0.18511927, a: 0}
   m_BuildTextureStacks: []
