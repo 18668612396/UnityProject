@@ -1,7 +1,0 @@
-#ifndef GRASS_FUNCTION_INCLUDE
-    #define GRASS_FUNCTION_INCLUDE
-
-
-
-
-#endif

@@ -107,10 +107,11 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _WindAmin: 0
+    - _WindAnimToggle: 0
     - _ZWrite: 1
     - _fallDustEmissionIntensity: 0
     m_Colors:
-    - _Color: {r: 0.8784314, g: 0.46146402, b: 0.2705882, a: 1}
+    - _Color: {r: 0.5663296, g: 0.735849, b: 0.3436276, a: 1}
     - _EmissionColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _FallDustColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

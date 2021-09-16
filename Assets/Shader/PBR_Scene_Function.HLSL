@@ -1,7 +1,7 @@
 #ifndef PBR_FUNCTION_INCLUDE
     #define PBR_FUNCTION_INCLUDE
     
-    #include "../../ShaderFunction.hlsl"
+    #include "ShaderFunction.hlsl"
 
     //PBR代码
     uniform samplerCUBE _cube;

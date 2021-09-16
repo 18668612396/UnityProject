@@ -3,6 +3,7 @@ Shader "Unlit/Test"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Noise("n",2D) = "white"{}
     }
     SubShader
     {
@@ -34,7 +35,8 @@ Shader "Unlit/Test"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-
+            sampler2D _Noise;
+            float4 _Noise_ST;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -47,10 +49,10 @@ Shader "Unlit/Test"
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return frac(sin(i.uv.y)*10);
+       
+                float test = 1;
+                
+                return test;
             }
             ENDCG
         }
