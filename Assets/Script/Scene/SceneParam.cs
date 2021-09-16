@@ -9,7 +9,7 @@ public class SceneParam : MonoBehaviour
 {
 
     public bool _BigWind;
-    
+    bool _tempBigWind;
 
     private void Update()
     {
@@ -17,7 +17,6 @@ public class SceneParam : MonoBehaviour
         CloudShadow();
         GrassInteract();
     }
-
 
     //风力动画参数
     [Range(1.0f, 50.0f)] public float _WindDensity = 20.0f;
@@ -34,18 +33,10 @@ public class SceneParam : MonoBehaviour
         Shader.SetGlobalFloat("_WindSpeedFloat", _WindSpeedFloat);
         Shader.SetGlobalFloat("_WindTurbulenceFloat", _WindTurbulenceFloat);
         Shader.SetGlobalFloat("_WindStrengthFloat", _WindStrengthFloat);
-        if (_BigWind == true)
-        {
-            _WindSpeedFloat = 1.0f;
-            _WindTurbulenceFloat = 0.5f;
-            _WindStrengthFloat = 1.0f;
-        }
-        else
-        {
-            _WindSpeedFloat = 0.35f;
-            _WindTurbulenceFloat = 0.5f;
-            _WindStrengthFloat = 0.35f;
-        }
+
+     
+
+
     }
 
     //云阴影参数
@@ -60,14 +51,6 @@ public class SceneParam : MonoBehaviour
         Shader.SetGlobalVector("_CloudShadowRadius", _CloudShadowRadius);
         Shader.SetGlobalFloat("_CloudShadowSpeed", _CloudShadowSpeed);
 
-        if (_BigWind == true)
-        {
-            _CloudShadowSpeed = 5.0f;
-        }
-        else
-        {
-            _CloudShadowSpeed = 1.0f;
-        }
 
     }
     //草地交互参数
@@ -78,4 +61,5 @@ public class SceneParam : MonoBehaviour
         Shader.SetGlobalFloat("_InteractRadius", _InteractRadius);
         Shader.SetGlobalFloat("_InteractIntensity", _InteractIntensity);
     }
+
 }

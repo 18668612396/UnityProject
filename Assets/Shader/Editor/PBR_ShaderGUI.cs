@@ -9,7 +9,7 @@ public class PBR_ShaderGUI : ShaderGUI
     Material material;
     //基础PBR材质参数
     MaterialProperty _MainTexProp;
-    MaterialProperty _BaseColorProp;
+    MaterialProperty _ColorProp;
     MaterialProperty _EmissionIntensityProp;
     MaterialProperty _PbrParamProp;
     MaterialProperty _MetallicProp;
@@ -60,7 +60,7 @@ public class PBR_ShaderGUI : ShaderGUI
     {
         //PBR材质参数
         _MainTexProp = FindProperty("_MainTex", properties);
-        _BaseColorProp = FindProperty("_BaseColor", properties);
+        _ColorProp = FindProperty("_Color", properties);
         _EmissionIntensityProp = FindProperty("_EmissionIntensity", properties);
         _PbrParamProp = FindProperty("_PbrParam", properties);
         _MetallicProp = FindProperty("_Metallic", properties);
@@ -108,7 +108,7 @@ public class PBR_ShaderGUI : ShaderGUI
     private void BaseParamGUI(MaterialEditor materialEditor)
     {
         EditorGUILayout.LabelField("PBR BaseParam", EditorStyles.boldLabel);//头标题
-        materialEditor.TexturePropertySingleLine(new GUIContent("Albedo", "纹理颜色(RGB) 透明通道(A) 叠加颜色(Color) 自发光强度(Slider)"), _MainTexProp, _BaseColorProp, _EmissionIntensityProp);//绘制主颜色纹理GUI
+        materialEditor.TexturePropertySingleLine(new GUIContent("Albedo", "纹理颜色(RGB) 透明通道(A) 叠加颜色(Color) 自发光强度(Slider)"), _MainTexProp, _ColorProp, _EmissionIntensityProp);//绘制主颜色纹理GUI
         materialEditor.TexturePropertySingleLine(new GUIContent("PbrParam", "Metallic(R) Roughness(G) Occlusion(B) Emission(A) F_Roughness(Slider) F_Metallic(Float)"), _PbrParamProp, _RoughnessProp, _MetallicProp);//绘制PBR参数纹理GUI
         materialEditor.TexturePropertySingleLine(new GUIContent("Normal"), _NormalProp, _NormalIntensityProp);//绘制法线纹理GUI
         materialEditor.TextureScaleOffsetProperty(_MainTexProp);//绘制主颜色纹理Tiling Offset

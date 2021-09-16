@@ -78,8 +78,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DownColor: {r: 5.985495, g: 1.7787083, b: 1.9338809, a: 0}
+    - _DownColor: {r: 1, g: 0.24957027, b: 0.19339621, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GradientVector: {r: 1.0451579, g: 5.5357156, b: 0.6808876, a: 1}
-    - _TopColor: {r: 1.7207954, g: 0.82886475, b: 0.5135358, a: 0}
+    - _GradientVector: {r: -10, g: -5.5094423, b: 0.6368109, a: 1}
+    - _TopColor: {r: 1, g: 0.48035133, b: 0.23113209, a: 0}
   m_BuildTextureStacks: []

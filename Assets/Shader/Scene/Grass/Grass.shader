@@ -3,8 +3,8 @@ Shader "Custom/GrassShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        [HDR]_TopColor("TopColor",Color) = (1.0,1.0,1.0,1.0)
-        [HDR] _DownColor("DownColor",Color) = (0.0,0.0,0.0,0.0)
+        [HDR]_Color("TopColor",Color) = (1.0,1.0,1.0,1.0)
+        
         _GradientVector("_GradientVector",vector) = (0.0,1.0,0.0,0.0)
         _CutOff("Cutoff",Range(0.0,1.0)) = 0.0
         _WindAnimToggle("_WindAnimToggle",int) = 1
@@ -20,8 +20,8 @@ Shader "Custom/GrassShader"
 
         uniform sampler2D _MainTex;
         uniform float _CutOff;
-        uniform float4 _TopColor;
-        uniform float4 _DownColor;
+        uniform float4 _Color;
+
         uniform float4 _GradientVector;
         uniform float _OcclusionIntensity;
         struct Vegetation
@@ -79,7 +79,7 @@ Shader "Custom/GrassShader"
                 
                 o.worldPos = mul(unity_ObjectToWorld,v.vertex);
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.localPos = mul(unity_ObjectToWorld,v.vertex);
+                o.localPos = v.vertex;
                 o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.uv = v.uv;
                 o.vertexColor = v.color;
@@ -94,17 +94,15 @@ Shader "Custom/GrassShader"
                 //采样贴图
                 fixed4 var_MainTex = tex2D(_MainTex, i.uv);
                 //准备向量
-                float4 localPos = i.localPos;
                 float3 lightDir = normalize(_WorldSpaceLightPos0).xyz;
                 float3 normalDir = normalize(i.worldNormal);
 
                 //点乘计算
                 float NdotL = saturate(dot(normalDir,lightDir));
                 //基础颜色Albedo
-                float Gradient = saturate(smoothstep(_GradientVector.x,_GradientVector.y,localPos.y  + _GradientVector.z));
-                float3 Albedo  = lerp(_DownColor,_TopColor,Gradient) * var_MainTex.r;
+                float3 Albedo  = _Color;
                 //Occlusion
-                float Occlustion = lerp(_GradientVector.z,_GradientVector.w,i.vertexColor.r);
+                float Occlustion = 1;
                 //主光源影响
                 float shadow = SHADOW_ATTENUATION(i);
                 float3 lightContribution = Albedo * _LightColor0.rgb * NdotL * shadow * CLOUD_SHADOW(i);
@@ -117,7 +115,6 @@ Shader "Custom/GrassShader"
                 clip(var_MainTex.g - _CutOff);
                 //输出
 
-                
                 return finalRGB.rgbb;
             }
             ENDCG
@@ -173,5 +170,5 @@ Shader "Custom/GrassShader"
         
     }
 
-    CustomEditor "VegetationShaderGUI"
+    CustomEditor "GrassShaderGUI"
 }

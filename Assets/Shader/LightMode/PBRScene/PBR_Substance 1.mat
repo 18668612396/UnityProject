@@ -48,23 +48,24 @@ Material:
     - _BlendHeight: 0
     - _EmissionIntensity: 0
     - _FallDust: 0
-    - _FallDustColorBlend: 1
+    - _FallDustColorBlend: 0.53
     - _FallDustMetallic: 0
-    - _FallDustNormalIntensity: 0
-    - _FallDustRoughness: 1
+    - _FallDustNormalIntensity: 0.338
+    - _FallDustRoughness: 0.421
     - _HeightDepth: 0
-    - _HeightScale: 0.58
+    - _HeightScale: -0.41
     - _MaxSample: 4
     - _Metallic: 0
     - _MinSample: 4
     - _NormalIntensity: 1
     - _Parallax: 0
-    - _PomScale: 0.213
+    - _PomScale: 0
     - _Roughness: 1
     - _SectionSteps: 4
     - _WindAmin: 0
-    - _fallDustEmissionIntensity: 0
+    - _fallDustEmissionIntensity: 4.01
     m_Colors:
     - _BaseColor: {r: 1, g: 0.89244795, b: 0.7877358, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _FallDustColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

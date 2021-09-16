@@ -13,7 +13,7 @@ Shader "Custom/PBR_Scene"
 
         [Header(BBR Base)]
         _MainTex (" MainTex ", 2D) = "white" {}
-        _BaseColor("BaseColor",Color) = (1,1,1,1)
+        _Color("BaseColor",Color) = (1,1,1,1)
         [NoScaleOffset]_PbrParam("PbrParamTex",2D) = "white"{}
         _EmissionIntensity("EmissionIntensity",Range(0,10)) = 0
         [PowerSlider(1)]_Metallic ("Metallic",Range(0,1)) = 0
@@ -71,9 +71,9 @@ Shader "Custom/PBR_Scene"
                 float  shadow;
                 
             };
-            #include "PBR_Scene_FallDust.HLSL"
-            #include "PBR_Scene_Function.HLSL"
-
+            #include "../../PBR_Scene_FallDust.HLSL"
+            #include "../../PBR_Scene_Function.HLSL"
+ 
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -106,7 +106,7 @@ Shader "Custom/PBR_Scene"
             uniform sampler2D _Normal;
             uniform sampler2D _PbrParam;
             uniform float4 _MainTex_ST;
-            uniform float4 _BaseColor;
+            uniform float4 _Color;
             uniform float _Metallic,_Roughness,_EmissionIntensity;
             uniform float _NormalIntensity;
             uniform int _FallDust;
@@ -151,7 +151,7 @@ Shader "Custom/PBR_Scene"
                 float4 var_Normal    = tex2D(_Normal,uv);//A通道为高度图
                 //PBR
                 PBR pbr;
-                pbr.baseColor = var_MainTex.rgb * _BaseColor.rgb;
+                pbr.baseColor = var_MainTex.rgb * _Color.rgb;
                 pbr.emission  = lerp(0,var_MainTex.rgb * max(0.0,_EmissionIntensity),var_PbrParam.a);
                 pbr.normal    = lerp(float4(0.5,0.5,1,1),var_Normal,_NormalIntensity);//A通道为高度图
                 pbr.metallic  = min(_Metallic,var_PbrParam.r);
