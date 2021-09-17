@@ -181,7 +181,7 @@ public class PBR_ShaderGUI : ShaderGUI
     private void WindAnimTGUI(MaterialEditor materialEditor)
     {
         _WindAnimToggle = material.IsKeywordEnabled("_WINDANIMTOGGLE_ON") ? true : false;
-        _WindAnimToggle = EditorGUILayout.BeginToggleGroup("WINDANIMTOGGLE", _WindAnimToggle);
+        _WindAnimToggle = EditorGUILayout.BeginToggleGroup("WIND_ANIM", _WindAnimToggle);
         if (_WindAnimToggle)
         {
             material.EnableKeyword("_WINDANIMTOGGLE_ON");

@@ -107,6 +107,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _WindAmin: 0
+    - _WindAnimToggle: 0
     - _ZWrite: 1
     - _fallDustEmissionIntensity: 0
     m_Colors:

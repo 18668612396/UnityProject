@@ -100,13 +100,14 @@ Material:
     - _OcclusionStrength: 0
     - _Parallax: 0.02
     - _PomScale: 0
-    - _Roughness: 1
+    - _Roughness: 0
     - _SectionSteps: 4
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _WindAmin: 0
+    - _WindAnimToggle: 0
     - _ZWrite: 1
     - _fallDustEmissionIntensity: 0
     m_Colors:

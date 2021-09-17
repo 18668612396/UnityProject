@@ -55,6 +55,13 @@ MonoBehaviour:
   _CloudShadowSpeed: 0.65
   _InteractRadius: 0.85
   _InteractIntensity: 0.75
+  _FogColor: {r: 0.68182623, g: 0.85303223, b: 0.8867924, a: 1}
+  _FogGlobalDensity: 2.27
+  _FogFallOff: -2.4
+  _FogHeight: 27.7
+  _FogStartDis: 5.35
+  _FogInscatteringExp: 12.9
+  _FogGradientDis: 50
 --- !u!82 &1607261687
 AudioSource:
   m_ObjectHideFlags: 0
