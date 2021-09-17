@@ -25,18 +25,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CloudAminSpeed: 0.3
+    - _CloudAminSpeed: 0.1
     - _CloudGrow: -0.91
     - _CloudPosX: 1
     - _CloudPosY: 3.89
     - _CloudTime: -0.66
     - _CutOff: 0.79
     - _LightRadius: 8.8
-    - _MaxLightRadius: 3.4
+    - _MaxLightRadius: 10.51
     - _MinLightRadius: 80
     - _RimLightIntensity: 3
     - _RimLightRadius: 20
-    - _RimpIntensity: 2
+    - _RimpIntensity: 1.5
     - _lightPenetranceIntensity: 0.205
     - _lightPenetranceRadius: 5.8
     - _lightRadius: 2.99
@@ -47,7 +47,7 @@ Material:
     - _BaseColor_LightDir: {r: 0.10224175, g: 0.30946895, b: 0.5520116, a: 1}
     - _BaseColor_Shadow: {r: 0.039215688, g: 0.11764706, b: 0.28235295, a: 1}
     - _BaseColor_Shelter: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
-    - _Color: {r: 0.9669811, g: 0.9883988, b: 1, a: 1}
+    - _Color: {r: 0.8254717, g: 0.9223554, b: 1, a: 1}
     - _HighLightColor: {r: 0.8196079, g: 0.9176471, b: 0.97647065, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 0.23137257, g: 0.60784316, b: 0.7960785, a: 0}

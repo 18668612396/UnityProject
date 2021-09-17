@@ -85,7 +85,7 @@ Shader "SceneEffect/CloudShader"
                 //Cloud动画
                 float aminRandomTime = i.randomFloat;
 
-                float cloudAlphaFactor = smoothstep(aminRandomTime,aminRandomTime + 0.5,var_MainTex.b);
+                float cloudAlphaFactor = smoothstep(aminRandomTime,aminRandomTime + 0.1,var_MainTex.b);
                 //基础颜色
                 float3 Albedo = _Color.rgb;
                 float Occlustion = 1;
@@ -100,7 +100,7 @@ Shader "SceneEffect/CloudShader"
                 float3 indirectionContribution = Ambient * Albedo * Occlustion * rimpLight;
                 //最终颜色
                 float3 finalRGB = lightContribution + indirectionContribution;
-
+                BIGWORLD_FOG(i,finalRGB);//大世界雾效
                 return float4(finalRGB,(var_MainTex.a) * cloudAlphaFactor);
             }
             ENDCG
