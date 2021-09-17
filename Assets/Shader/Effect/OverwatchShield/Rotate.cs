@@ -3,6 +3,7 @@
 /// <summary>
 /// Rotates the object around the global Y axis
 /// </summary>
+[ExecuteInEditMode]
 public class Rotate : MonoBehaviour
 {
     /// <summary>
@@ -13,6 +14,6 @@ public class Rotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.left, Speed * Time.deltaTime, Space.World);
+        transform.Rotate(Vector3.up, Speed * Time.deltaTime, Space.World);
     }
 }

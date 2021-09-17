@@ -27,8 +27,8 @@ Material:
     m_Floats:
     - _CutOff: 0.5
     - _OcclusionIntensity: 0.15
-    - _SpecularIntensity: 0.3
-    - _SpecularRadius: 17.5
+    - _SpecularIntensity: 0.334
+    - _SpecularRadius: 15.6
     - _WindAnimToggle: 1
     m_Colors:
     - _Color: {r: 0.48013896, g: 0.5377358, b: 0.20038268, a: 1}

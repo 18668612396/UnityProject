@@ -10,13 +10,17 @@ public class SceneParam : MonoBehaviour
 
     public bool _BigWind;
     bool _tempBigWind;
-
+    private void OnValidate()
+    {
+        CloudParam();
+    }
     private void Update()
     {
         WindParam();
         CloudShadow();
         GrassInteract();
         BigWorldFog();//大世界雾效
+
     }
 
     //风力动画参数
@@ -65,25 +69,30 @@ public class SceneParam : MonoBehaviour
 
     //雾效
 
-    public Color _FogColor;
+    public Color _FogColor;//雾的颜色
 
-    public float _FogGlobalDensity;
-    public float _FogFallOff;
-    public float _FogHeight;
-    public float _FogStartDis;
-    public float _FogInscatteringExp;
-    public float _FogGradientDis;
+    public float _FogGlobalDensity = 2.0f;//雾的密度
+    public float _FogHeight = 0.0f;//雾的高度
+    public float _FogStartDistance = 10.0f;//雾的开始距离
+    public float _FogInscatteringExp = 1.0f;//雾散射指数
+    public float _FogGradientDistance = 50.0f;//雾的梯度距离
 
     private void BigWorldFog()
     {
-   
-        Shader.SetGlobalColor("_FogColor",_FogColor);
-        Shader.SetGlobalFloat("_FogGlobalDensity",_FogGlobalDensity);
-        Shader.SetGlobalFloat("_FogFallOff",_FogFallOff);
-        Shader.SetGlobalFloat("_FogHeight",_FogHeight);
-        Shader.SetGlobalFloat("_FogStartDis",_FogStartDis);
-        Shader.SetGlobalFloat("_FogInscatteringExp",_FogInscatteringExp);
-        Shader.SetGlobalFloat("_FogGradientDis",_FogGradientDis);
+
+        Shader.SetGlobalColor("_FogColor", _FogColor);
+        Shader.SetGlobalFloat("_FogGlobalDensity", _FogGlobalDensity);
+        Shader.SetGlobalFloat("_FogHeight", _FogHeight);
+        Shader.SetGlobalFloat("_FogStartDis", _FogStartDistance);
+        Shader.SetGlobalFloat("_FogInscatteringExp", _FogInscatteringExp);
+        Shader.SetGlobalFloat("_FogGradientDis", _FogGradientDistance);
+    }
+
+    private void CloudParam()
+    {
+        float num = Random.Range(0.0f, 1.0f);
+
+        Shader.SetGlobalFloat("_test", 1);
     }
 
 }

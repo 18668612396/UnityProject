@@ -102,7 +102,7 @@
     #pragma multi_compile _WORLDFOG_ON 
     uniform float4 _FogColor;
     uniform float _FogGlobalDensity;
-    uniform float _FogFallOff;
+    // uniform float _FogFallOff;
     uniform float _FogHeight;
     uniform float _FogStartDis;
     uniform float _FogInscatteringExp;
@@ -110,8 +110,8 @@
 
     void ExponentialHeightFog(float3 worldPos,inout float3 finalRGB)
     {
-        float heightFallOff = _FogFallOff * 0.01;
-        float falloff = heightFallOff * ( worldPos.y -  _WorldSpaceCameraPos.y- _FogHeight);
+       // float heightFallOff = _FogFallOff * 0.01;
+        float falloff = 0.01 * ( worldPos.y -  _WorldSpaceCameraPos.y- _FogHeight); //这里节省了 _FogFallOff
         float fogDensity = _FogGlobalDensity * exp2(-falloff);
         float fogFactor = (1 - exp2(-falloff))/falloff;
         float3 viewDir = _WorldSpaceCameraPos - worldPos;
@@ -123,7 +123,7 @@
         inscatterFactor *= distanceFactor;
         float3 finalFogColor = lerp(_FogColor, _LightColor0, saturate(inscatterFactor));
         #if _WORLDFOG_ON
-        finalRGB =lerp(finalRGB, finalFogColor, saturate(fog) * _FogColor.a);
+        finalRGB =lerp(finalRGB, finalFogColor, saturate(fog));
         #elif _WORLDFOG_OFF
         finalRGB = finalRGB;
         #endif
