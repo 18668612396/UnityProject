@@ -1,7 +1,9 @@
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-Shader "Custom/SkyboxShader" {
-    Properties {
+Shader "Custom/SkyboxShader"
+ {
+    Properties
+     {
         [KeywordEnum(None, Simple, High Quality)] _SunDisk ("Sun", Int) = 2
         _SunSize ("Sun Size", Range(0,1)) = 0.04
         _SunSizeConvergence("Sun Size Convergence", Range(1,10)) = 5
@@ -11,8 +13,14 @@ Shader "Custom/SkyboxShader" {
         _Exposure("Exposure", Range(0, 8)) = 1.3
     }
 
-    SubShader {
-        Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" }
+    SubShader
+    {
+        Tags 
+        {
+            "Queue"="Background" 
+            "RenderType"="Background" 
+            "PreviewType"="Skybox" 
+        }
         Cull Off ZWrite Off
 
         Pass {
@@ -385,7 +393,7 @@ Shader "Custom/SkyboxShader" {
                     col = LINEAR_2_OUTPUT(col);
                 #endif
                 float3 finalRGB = col;
-      
+                
                 return half4(finalRGB,1.0);
 
             }
