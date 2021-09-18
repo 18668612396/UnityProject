@@ -100,7 +100,7 @@ Shader "SceneEffect/CloudShader"
                 float3 indirectionContribution = Ambient * Albedo * Occlustion * rimpLight;
                 //最终颜色
                 float3 finalRGB = lightContribution + indirectionContribution;
-                BIGWORLD_FOG(i,finalRGB);//大世界雾效
+                // BIGWORLD_FOG(i,finalRGB);//大世界雾效
                 return float4(finalRGB,(var_MainTex.a) * cloudAlphaFactor);
             }
             ENDCG

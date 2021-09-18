@@ -1,3 +1,5 @@
+// Upgrade NOTE: upgraded instancing buffer 'MyProperties' to new syntax.
+
 Shader "Custom/GrassShader"
 {
     Properties
@@ -19,15 +21,45 @@ Shader "Custom/GrassShader"
         LOD 100
 
         CGINCLUDE
+        //宏和引用
         #include "../ShaderFunction.hlsl"
+        //GPU Instancing 宏开关
+        #pragma multi_compile_instancing    
+        //变量声明
         uniform sampler2D _MainTex;
         uniform float _CutOff;
         uniform float4 _Color;
-
         uniform float4 _GradientVector;
         uniform float _OcclusionIntensity;
         uniform float _SpecularRadius;
         uniform float _SpecularIntensity;
+        
+        //结构体
+        #pragma vertex vert
+        #pragma fragment frag
+        #pragma multi_compile_fwdbase
+        #pragma multi_compile_shadowcaster
+        struct appdata
+        {
+            float4 vertex : POSITION;
+            float2 uv : TEXCOORD0;
+            float4 color:COLOR;
+            float3 normal:NORMAL;
+            UNITY_VERTEX_INPUT_INSTANCE_ID //GPU Instancing顶点定义
+        };
+
+        struct v2f
+        {
+            float2 uv : TEXCOORD0;
+            float4 pos : SV_POSITION;
+            float4 localPos:TEXCOORD2;
+            float4 vertexColor:COLOR;
+            float3 worldNormal:NORMAL;
+            float3 worldPos :TEXCOORD3;
+            float3 worldView :TEXCOORD4;
+            UNITY_VERTEX_INPUT_INSTANCE_ID  //GPU Instancing 片元定义
+            LIGHTING_COORDS(98,99)
+        };
         
         ENDCG
         Pass
@@ -40,36 +72,13 @@ Shader "Custom/GrassShader"
             LOD 100
             Cull off
             CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma multi_compile_fwdbase
-
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-                float4 color:COLOR;
-                float3 normal:NORMAL;
-                
-            };
-
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 pos : SV_POSITION;
-                float4 localPos:TEXCOORD2;
-                float4 vertexColor:COLOR;
-                float3 worldNormal:NORMAL;
-                float3 worldPos :TEXCOORD3;
-                float3 worldView :TEXCOORD4;
-                LIGHTING_COORDS(98,99)
-            };
-
 
             v2f vert (appdata v)
             {
                 v2f o;
                 UNITY_INITIALIZE_OUTPUT(v2f,o);//初始化顶点着色器
+                UNITY_SETUP_INSTANCE_ID(v);//GPU Instancing
+                UNITY_TRANSFER_INSTANCE_ID(v, o);//GPU Instancing
                 GRASS_INTERACT(v);
                 WIND_ANIM(v);
                 
@@ -86,10 +95,10 @@ Shader "Custom/GrassShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                
+                UNITY_SETUP_INSTANCE_ID(i);//GPU Instancing
                 //采样贴图
                 fixed4 var_MainTex = tex2D(_MainTex, i.uv);
-                   //AlphaTest
+                //AlphaTest
                 clip(var_MainTex.g - _CutOff);
                 //准备向量
                 float3 lightDir = normalize(_WorldSpaceLightPos0).xyz;
@@ -111,11 +120,11 @@ Shader "Custom/GrassShader"
                 //环境光源影响
                 float3 Ambient = ShadeSH9(float4(normalDir,1));
                 float3 indirectionContribution = Ambient * Albedo * Occlustion;
-      
+                
                 //光照合成
                 float3 finalRGB = lightContribution + indirectionContribution;
                 BIGWORLD_FOG(i,finalRGB);//大世界雾效
-             
+                
                 //输出
                 return finalRGB.rgbb;
             }
@@ -128,34 +137,20 @@ Shader "Custom/GrassShader"
             Tags{"LightMode" = "ShadowCaster"}	
             Cull off
             CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #pragma multi_compile_shadowcaster
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-                float4 color:COLOR;
-                float3 normal:NORMAL;
-                UNITY_VERTEX_INPUT_INSTANCE_ID
-            };
-            
-            struct v2f 
-            {
-                V2F_SHADOW_CASTER;
-                float2 uv : TEXCOORD0;
-                
-            };
+
+
 
             v2f vert (appdata v)
             {
                 v2f o;
+                UNITY_INITIALIZE_OUTPUT(v2f,o);//初始化顶点着色器
+                UNITY_SETUP_INSTANCE_ID(v);//GPU Instancing
+                UNITY_TRANSFER_INSTANCE_ID(v, o);//GPU Instancing
                 GRASS_INTERACT(v);
                 WIND_ANIM(v);
-                
                 o.uv = v.uv;
                 TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
-                
+
                 return o;
             }
             float4 frag(v2f i ):SV_Target
