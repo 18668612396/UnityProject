@@ -41,6 +41,7 @@
     }
 
     //风力动画
+    #pragma multi_compile _WINDANIM_ON _WINDANIM_OFF
     uniform int   _WindAnimToggle;
     uniform float  _WindDensity;
     uniform float3 _WindDirection;
@@ -49,49 +50,63 @@
     uniform float  _WindStrengthFloat;
     void WindAnimation(inout float4 vertex, float4 vertexColor)
     {   
-        vertex.xyz = vertex.xyz;
-        float3 worldPos = mul(unity_ObjectToWorld,vertex);
-        float3 windDirection = float3(_WindDirection.xy,0.0);
-        float2 panner = (1.0 * _Time.y * (windDirection * _WindSpeedFloat * 10).xy + worldPos.xy);
-        float SimplePerlinNoise = PerlinNoise(panner * _WindTurbulenceFloat / 10 * _WindDensity) * 0.5 + 0.5;
-        if(_WindAnimToggle > 0)
-        {
-            vertex.xyz += mul(unity_WorldToObject,float4(_WindDirection * (SimplePerlinNoise * _WindStrengthFloat),0.0)) * vertexColor.a;
-        }
+        #if _WINDANIM_ON
+            vertex.xyz = vertex.xyz;
+            float3 worldPos = mul(unity_ObjectToWorld,vertex);
+            float3 windDirection = float3(_WindDirection.xy,0.0);
+            float2 panner = (1.0 * _Time.y * (windDirection * _WindSpeedFloat * 10).xy + worldPos.xy);
+            float SimplePerlinNoise = PerlinNoise(panner * _WindTurbulenceFloat / 10 * _WindDensity) * 0.5 + 0.5;
+            if(_WindAnimToggle > 0)
+            {
+                vertex.xyz += mul(unity_WorldToObject,float4(_WindDirection * (SimplePerlinNoise * _WindStrengthFloat),0.0)) * vertexColor.a;
+            }
+            vertex.w = 1.0;
+        #elif _WINDANIM_OFF
+            vertex = vertex;
+        #endif
         
-        vertex.w = 1.0;
         
     }
     #define WIND_ANIM(v)  WindAnimation(v.vertex,v.color);
 
     //云阴影
+    #pragma multi_compile _CLOUDSHADOW_ON _CLOUDSHADOW_OFF
     uniform float _CloudShadowSize;
     uniform vector _CloudShadowRadius;
     uniform float _CloudShadowSpeed;
     uniform float _CloudShadowIntensity;
     float CloudShadow(float3 worldPos)
     {
-        
-        float Shadow = PerlinNoise(worldPos.xz * _CloudShadowSize * _CloudShadowRadius.xy + _Time.y * _WindDirection * _CloudShadowSpeed);
-        
-        return lerp(1.0,1.0 - saturate(Shadow),_CloudShadowIntensity);
+        float Shadow = 1.0;
+        #if _CLOUDSHADOW_ON
+            Shadow = PerlinNoise(worldPos.xz * _CloudShadowSize * _CloudShadowRadius.xy + _Time.y * _WindDirection * _CloudShadowSpeed);
+            Shadow = lerp(1.0,1.0 - saturate(Shadow),_CloudShadowIntensity);
+        #elif _CLOUDSHADOW_OFF
+            Shadow = 1.0;
+        #endif
+        return Shadow;
     }
     #define CLOUD_SHADOW(i)  CloudShadow(i.worldPos);
 
-    //植被交互
-
+    ///植被交互
+    #pragma multi_compile _INTERACT_ON _INTERACT_OFF
     uniform float _InteractRadius;
     uniform float _InteractIntensity;
+    uniform float _InteractHeight;
     uniform float3 _PlayerPos;
     void GrassInteract(float2 uv,float4 vertexColor,inout float4 vertex)
     {
-        float3 worldPos = mul(unity_ObjectToWorld,vertex).xyz;
-        float interactDistance = distance(_PlayerPos.xyz + float3(0,1.5,0),worldPos);
-        float interactDown = saturate((1 - interactDistance + _InteractRadius) * uv.y * _InteractIntensity);
-        float3 interactDirection = normalize(worldPos.xyz - _PlayerPos.xyz);
-        worldPos.xyz = interactDirection * interactDown * vertexColor.a;
-        worldPos.y*= 0.2;
-        vertex.xyz += mul(unity_WorldToObject,worldPos);
+        #if _INTERACT_ON
+            float3 worldPos = mul(unity_ObjectToWorld,vertex).xyz;
+            float interactDistance = distance(_PlayerPos.xyz + float3(0,_InteractHeight,0),worldPos);
+            float interactDown = saturate((1 - interactDistance + _InteractRadius) * uv.y * _InteractIntensity);
+            float3 interactDirection = normalize(worldPos.xyz - _PlayerPos.xyz);
+            worldPos.xyz = interactDirection * interactDown * vertexColor.a;
+            worldPos.y*= 0.2;
+            vertex.xyz += mul(unity_WorldToObject,worldPos);
+        #elif _INTERACT_OFF
+            vertex = vertex;
+        #endif
     }
     #define GRASS_INTERACT(v) GrassInteract(v.uv,v.color,v.vertex);
 
@@ -99,7 +114,7 @@
 
     //大世界雾效
     //后续编辑脚本GUI时 控制宏开开关
-    #pragma multi_compile _WORLDFOG_ON 
+    #pragma multi_compile _WORLDFOG_ON _WORLDFOG_OFF
     uniform float4 _FogColor;
     uniform float _FogGlobalDensity;
     // uniform float _FogFallOff;
@@ -110,24 +125,34 @@
 
     void ExponentialHeightFog(float3 worldPos,inout float3 finalRGB)
     {
-       // float heightFallOff = _FogFallOff * 0.01;
-        float falloff = 0.01 * ( worldPos.y -  _WorldSpaceCameraPos.y- _FogHeight); //这里节省了 _FogFallOff
-        float fogDensity = _FogGlobalDensity * exp2(-falloff);
-        float fogFactor = (1 - exp2(-falloff))/falloff;
-        float3 viewDir = _WorldSpaceCameraPos - worldPos;
-        float rayLength = length(viewDir);
-        float distanceFactor = max((rayLength - _FogStartDis)/ _FogGradientDis, 0);
-        float fog = fogFactor * fogDensity * distanceFactor;
-        float inscatterFactor = pow(saturate(dot(-normalize(viewDir), WorldSpaceLightDir(float4(worldPos,1)))), _FogInscatteringExp);
-        inscatterFactor *= 1-saturate(exp2(falloff));
-        inscatterFactor *= distanceFactor;
-        float3 finalFogColor = lerp(_FogColor, _LightColor0, saturate(inscatterFactor));
         #if _WORLDFOG_ON
-        finalRGB =lerp(finalRGB, finalFogColor, saturate(fog));
-        #elif _WORLDFOG_OFF
-        finalRGB = finalRGB;
+            // float heightFallOff = _FogFallOff * 0.01;
+            float falloff = 0.01 * ( worldPos.y -  _WorldSpaceCameraPos.y- _FogHeight); //这里节省了 _FogFallOff
+            float fogDensity = _FogGlobalDensity * exp2(-falloff);
+            float fogFactor = (1 - exp2(-falloff))/falloff;
+            float3 viewDir = _WorldSpaceCameraPos - worldPos;
+            float rayLength = length(viewDir);
+            float distanceFactor = max((rayLength - _FogStartDis)/ _FogGradientDis, 0);
+            float fog = fogFactor * fogDensity * distanceFactor;
+            float inscatterFactor = pow(saturate(dot(-normalize(viewDir), WorldSpaceLightDir(float4(worldPos,1)))), _FogInscatteringExp);
+            inscatterFactor *= 1-saturate(exp2(falloff));
+            inscatterFactor *= distanceFactor;
+            float3 finalFogColor = lerp(_FogColor, _LightColor0, saturate(inscatterFactor));
+            finalRGB =lerp(finalRGB, finalFogColor, saturate(fog));
         #endif
+        finalRGB = finalRGB;
     }
-
     #define BIGWORLD_FOG(i,finalRGB) ExponentialHeightFog(i.worldPos,finalRGB);
+
+    //深度计算
+    UNITY_DECLARE_DEPTH_TEXTURE( _CameraDepthTexture );//声明深度纹理
+    uniform float _WaveRadius;
+    float DepthCompare(float4 scrPos)
+    {
+        float4 screenPos = scrPos / scrPos.w;
+        float screenDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE( _CameraDepthTexture, screenPos.xy ));
+        float distanceDepth = 1 - saturate(abs((screenDepth - LinearEyeDepth(screenPos.z )) * ( _WaveRadius)));
+        return distanceDepth;
+    }
+    #define DEPTH_COMPARE(i)  DepthCompare(i.scrPos);
 #endif

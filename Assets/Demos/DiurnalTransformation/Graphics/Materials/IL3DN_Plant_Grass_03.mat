@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: IL3DN_Plant_Grass_03
-  m_Shader: {fileID: 4800000, guid: 8bb76156a4f696249ac78cae0f1a0ade, type: 3}
+  m_Shader: {fileID: 4800000, guid: 69677495aaa1b074986cab89aab9c3dd, type: 3}
   m_ShaderKeywords: EFFECT_HUE_VARIATION GEOM_TYPE_LEAF _BEND_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -83,12 +83,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
     - _Bend: 1
     - _BendStrenght: 1
     - _BumpScale: 1
     - _Cull: 0
+    - _CutOff: 0.1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DirectionNoise: 1
@@ -102,6 +104,7 @@ Material:
     - _MaxWindStrength: 0.35
     - _Metallic: 0
     - _Mode: 0
+    - _OcclusionIntensity: 0.5
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Rotation: 0.6
@@ -114,6 +117,8 @@ Material:
     - _SnowSize: 0
     - _SnowSizeFloat: 1
     - _SpecularHighlights: 1
+    - _SpecularIntensity: 0
+    - _SpecularRadius: 50
     - _Speed: 10
     - _SquashAmount: 1
     - _SrcBlend: 1
@@ -133,6 +138,7 @@ Material:
     - _WiggleStrenght: 1
     - _Wind: 0
     - _WindAmplitudeMultiplier: 1
+    - _WindAnimToggle: 1
     - _WindDirectionSpeed: 5
     - _WindQuality: 4
     - _WindStrenght: 0.5
@@ -144,9 +150,11 @@ Material:
     - _Color0: {r: 1, g: 0.9847094, b: 0, a: 1}
     - _Color1: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _GradientVector: {r: 0, g: 1, b: 0, a: 0}
     - _HueVariation: {r: 1, g: 1, b: 1, a: 1}
     - _SnowColor: {r: 1, g: 1, b: 1, a: 0}
     - _Speed: {r: -0, g: 10, b: 0, a: 0}
     - _TranslucencyColor: {r: 0.72321427, g: 1, b: 0, a: 1}
     - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

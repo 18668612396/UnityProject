@@ -4,6 +4,7 @@ Shader "Custom/GrassShader"
 {
     Properties
     {
+       
         _MainTex ("Texture", 2D) = "white" {}
         _Color("TopColor",Color) = (1.0,1.0,1.0,1.0)
         
@@ -47,7 +48,6 @@ Shader "Custom/GrassShader"
             float3 normal:NORMAL;
             UNITY_VERTEX_INPUT_INSTANCE_ID //GPU Instancing顶点定义
         };
-
         struct v2f
         {
             float2 uv : TEXCOORD0;
@@ -79,8 +79,8 @@ Shader "Custom/GrassShader"
                 UNITY_INITIALIZE_OUTPUT(v2f,o);//初始化顶点着色器
                 UNITY_SETUP_INSTANCE_ID(v);//GPU Instancing
                 UNITY_TRANSFER_INSTANCE_ID(v, o);//GPU Instancing
-                GRASS_INTERACT(v);
-                WIND_ANIM(v);
+                GRASS_INTERACT(v);//角色交互
+                WIND_ANIM(v);//风力动画
                 
                 o.worldPos = mul(unity_ObjectToWorld,v.vertex);
                 o.pos = UnityObjectToClipPos(v.vertex);
@@ -115,8 +115,8 @@ Shader "Custom/GrassShader"
                 float Occlustion = lerp(1,i.vertexColor.a,_OcclusionIntensity);//把顶点色A通道当作别的草和自己的环境闭塞
                 //主光源影响
                 float specular = pow(NdotH,_SpecularRadius) * _SpecularIntensity * i.vertexColor.a;
-                float shadow = SHADOW_ATTENUATION(i) * i.vertexColor.a;//把顶点色A通道当作自投影
-                float3 lightContribution = (specular +  Albedo * _LightColor0.rgb * NdotL) * shadow  * CLOUD_SHADOW(i);
+                float shadow = SHADOW_ATTENUATION(i) * i.vertexColor.a * CLOUD_SHADOW(i);//把顶点色A通道当作自投影
+                float3 lightContribution = (specular +  Albedo * _LightColor0.rgb * NdotL) * shadow;
                 //环境光源影响
                 float3 Ambient = ShadeSH9(float4(normalDir,1));
                 float3 indirectionContribution = Ambient * Albedo * Occlustion;
@@ -165,5 +165,5 @@ Shader "Custom/GrassShader"
         
     }
 
-    CustomEditor "GrassShaderGUI"
+    //CustomEditor "GrassShaderGUI"
 }

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: IL3DN_Water
-  m_Shader: {fileID: 4800000, guid: 60751e0ebc0c92d4b9adf09e2596d80a, type: 3}
+  m_Shader: {fileID: 4800000, guid: e500e06e8eecbd04fbce9d77c6279bfe, type: 3}
   m_ShaderKeywords: EFFECT_HUE_VARIATION GEOM_TYPE_LEAF _ALPHAPREMULTIPLY_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -115,8 +115,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _BumpScale: 1
+    - _Color02: 0.186
     - _Cull: 2
     - _Cutoff: 0.5
     - _DeepOpacity: 1
@@ -169,6 +171,7 @@ Material:
     - _WaterOpacity: 0.088
     - _WaterSmoothness: 0.33
     - _WaterSpecular: 0
+    - _WaveRadius: 0.38
     - _WavesAmount: 93.73
     - _WavesAmplitude: 0.02
     - _WindQuality: 0
@@ -176,7 +179,7 @@ Material:
     - __dirty: 0
     m_Colors:
     - _BottomColor: {r: 0.2781999, g: 0.09594162, b: 0.41509432, a: 1}
-    - _Color: {r: 0.09545212, g: 0.31258285, b: 0.3679245, a: 0.42745098}
+    - _Color: {r: 0.32941177, g: 0.45490196, b: 0.5568628, a: 0.42745098}
     - _Color0: {r: 1, g: 1, b: 1, a: 1}
     - _DeepColor: {r: 0.02990388, g: 0.16228628, b: 0.30188626, a: 1}
     - _EdgeColor: {r: 0.4339623, g: 0.33974534, b: 0.16580635, a: 1}
@@ -192,3 +195,4 @@ Material:
     - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
     - _WaterColor: {r: 0.05887325, g: 0.46226412, b: 0.38302666, a: 1}
+  m_BuildTextureStacks: []

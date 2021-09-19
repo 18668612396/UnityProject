@@ -29,9 +29,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Interact: 0
     - _AlphaCutoff: 0.5
     - _CutOff: 0.5
-    - _OcclusionIntensity: 0.15
+    - _Interact: 0
+    - _OcclusionIntensity: 0.221
     - _Snow: 1
     - _SpecularIntensity: 0.334
     - _SpecularRadius: 15.6

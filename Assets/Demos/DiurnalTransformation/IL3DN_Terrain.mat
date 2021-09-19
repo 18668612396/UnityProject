@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: IL3DN_Terrain
-  m_Shader: {fileID: 4800000, guid: a9e527fd2575e0b4cbcab0036a2258bc, type: 3}
+  m_Shader: {fileID: 4800000, guid: d783b185bda4b434b8231495a9ca6884, type: 3}
   m_ShaderKeywords: EFFECT_HUE_VARIATION GEOM_TYPE_LEAF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -127,8 +127,8 @@ Material:
     - __dirty: 0
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Color0: {r: 0.30145326, g: 0.38679242, b: 0.12224095, a: 0}
-    - _Color1: {r: 0.5377357, g: 0.42102972, b: 0.2308205, a: 0}
+    - _Color0: {r: 0.53855234, g: 0.6320754, b: 0.3488341, a: 0}
+    - _Color1: {r: 0.6698113, g: 0.54707736, b: 0.3507031, a: 0}
     - _Color2: {r: 0, g: 0, b: 0, a: 0}
     - _Color3: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
