@@ -67,8 +67,8 @@ Shader "Custom/PbrShader"
             #pragma shader_feature _WINDANIMTOGGLE_ON
             struct PBR
             {
-                float3 baseColor;
-                float4 normal;//A通道为高度图
+                float4 baseColor;
+                float3 normal;//A通道为高度图
                 float3 emission;
                 float  roughness;
                 float  metallic;
@@ -146,7 +146,7 @@ Shader "Custom/PbrShader"
                 #endif
                 float2 uv = i.uv;
                 #ifdef _PARALLAX_ON
-                    uv = PBR_PARALLAX(i,_Normal);
+                    uv = PBR_PARALLAX(i,_MainTex);
                 #endif
 
 
@@ -154,16 +154,14 @@ Shader "Custom/PbrShader"
                 //贴图采样
                 float4 var_MainTex = tex2D(_MainTex,uv);
                 float4 var_PbrParam = tex2D(_PbrParam,uv);
-                float4 var_Normal    = tex2D(_Normal,uv);//A通道为高度图
+                float3 var_Normal    = tex2D(_Normal,uv);//A通道为高度图
                 //PBR
                 PBR pbr;
-                pbr.baseColor = var_MainTex.rgb * _Color.rgb;
+                pbr.baseColor = var_MainTex * _Color;
                 pbr.emission  = lerp(0,var_MainTex.rgb * max(0.0,_EmissionIntensity),var_PbrParam.a);
-                pbr.normal    = lerp(float4(0.5,0.5,1,1),var_Normal,_NormalIntensity);//A通道为高度图
+                pbr.normal    = lerp(float3(0.5,0.5,1),var_Normal,_NormalIntensity);//A通道为高度图
                 pbr.metallic  = min(_Metallic,var_PbrParam.r);
                 pbr.roughness = _Roughness*var_PbrParam.g;
-
-
 
                 //Lightmap相关
                 #ifdef LIGHTMAP_ON

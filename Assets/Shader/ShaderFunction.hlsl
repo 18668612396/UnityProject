@@ -5,6 +5,22 @@
     #include "AutoLight.cginc"
     #include "Lighting.cginc"
     #include "UnityCG.cginc"
+    //地表高度混合函数
+    float _TerrainHeightDepth;
+    inline half4 TerrainBlend(fixed4 _Splat0,fixed4 _Splat1,fixed4 _Splat2,fixed4 _Splat3,fixed4 var_Control)
+    {
+        half4 blend;
+        //获取混合后的高度通道
+        blend.r = _Splat0.a * var_Control.r;
+        blend.g = _Splat1.a * var_Control.g;
+        blend.b = _Splat2.a * var_Control.b;
+        blend.a = _Splat3.a * var_Control.a;
+        
+        half max_Height = max(blend.a,max(blend.b,max(blend.r,blend.g)));
+        blend = max( blend - max_Height + _TerrainHeightDepth,0.0) * var_Control;
+        
+        return blend / (blend.r + blend.g + blend.b + blend.a);
+    }
 
     //Noise
     float3 mod2D289( float3 x ) { return x - floor( x * ( 1.0 / 289.0 ) ) * 289.0; }
@@ -146,13 +162,14 @@
 
     //深度计算
     UNITY_DECLARE_DEPTH_TEXTURE( _CameraDepthTexture );//声明深度纹理
-    uniform float _WaveRadius;
-    float DepthCompare(float4 scrPos)
+
+    float DepthCompare(float4 scrPos, float radius)
     {
         float4 screenPos = scrPos / scrPos.w;
+        screenPos = saturate(screenPos);
         float screenDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE( _CameraDepthTexture, screenPos.xy ));
-        float distanceDepth = 1 - saturate(abs((screenDepth - LinearEyeDepth(screenPos.z )) * ( _WaveRadius)));
+        float distanceDepth = 1 - saturate(abs((screenDepth - LinearEyeDepth(screenPos.z )) * radius));
         return distanceDepth;
     }
-    #define DEPTH_COMPARE(i)  DepthCompare(i.scrPos);
+    #define DEPTH_COMPARE(i,radius)  DepthCompare(i.scrPos,radius);
 #endif

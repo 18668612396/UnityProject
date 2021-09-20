@@ -9,15 +9,15 @@
     float  _FallDustRoughness;
     float _fallDustEmissionIntensity;
     float _FallDustNormalIntensity;
-    void PBR_FallDust_Function(float2 uv ,float4 vertexColor,inout PBR pbr)
+    void PBR_FallDust_Function(float2 blendUV ,float4 vertexColor,inout PBR pbr)
     {
         //采样落灰贴图
-        uv = uv;
-        float4 var_FallDustMainTex = tex2D(_FallDustMainTex,uv) * _FallDustColor;
-        float4 var_FallDustPbrParam = tex2D(_FallDustPbrParam,uv);
-        float4 var_FallDustNormal = tex2D(_FallDustNormal,uv);
+        
+        float4 var_FallDustMainTex = tex2D(_FallDustMainTex,blendUV) * _FallDustColor;
+        float4 var_FallDustPbrParam = tex2D(_FallDustPbrParam,blendUV);
+        float4 var_FallDustNormal = tex2D(_FallDustNormal,blendUV);
         //落灰PBR的通道
-        float3 fallDustBaseColor = lerp(pbr.baseColor,var_FallDustMainTex.rgb,_FallDustColorBlend);
+        float4 fallDustBaseColor = float4(lerp(pbr.baseColor.rgb,var_FallDustMainTex.rgb,_FallDustColorBlend),1);
         float3 fallDustNormal    = lerp(float4(0.5,0.5,1,1),var_FallDustNormal,_FallDustNormalIntensity).xyz;
         float3 fallDustEmission  = lerp(0,var_FallDustMainTex.rgb * _FallDustColor.rgb * max(0.0,_fallDustEmissionIntensity),var_FallDustPbrParam.a);
         float  fallDustMetallic  = min(_FallDustMetallic,var_FallDustPbrParam.r);
@@ -25,7 +25,7 @@
         float  fallDustOcclustio = var_FallDustPbrParam.b;
 
         //高度融合mask
-        float4 heightBlend = saturate(pow((((1 - pbr.normal.a * var_FallDustNormal.a)*vertexColor)*4)+(vertexColor*2),_HeightDepth));//(1 - pbr.normal.a)比着原算法反向了一下高度图   此算法照搬的UE4的高度混合算法
+        float4 heightBlend = saturate(pow((((1 - pbr.baseColor.a * var_FallDustMainTex.a)*vertexColor)*4)+(vertexColor*2),_HeightDepth));//(1 - pbr.normal.a)比着原算法反向了一下高度图   此算法照搬的UE4的高度混合算法
 
         pbr.baseColor = lerp(pbr.baseColor,fallDustBaseColor,heightBlend.r);
         pbr.metallic      = lerp(pbr.metallic,fallDustMetallic,heightBlend.r);
