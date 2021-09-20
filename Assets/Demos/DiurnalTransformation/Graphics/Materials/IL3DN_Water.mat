@@ -127,6 +127,10 @@ Material:
     - _DetailNormalMapScale: 1
     - _Distortion: 0
     - _DstBlend: 10
+    - _EdgeIntensity: 0.5
+    - _EdgeRadius: 0.5
+    - _EdgeTile: 7.24
+    - _EdgeWarpScale: 0.1
     - _Float0: 0.694
     - _Float2: 1
     - _FlowSpeed: 1
@@ -141,7 +145,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.19
     - _GlossyReflections: 1
-    - _LightFactor: 0.5
+    - _IndirectionFactor: 0.82
+    - _LightFactor: 0.633
     - _Metallic: 0.398
     - _Mode: 3
     - _NormalIntensity: 0.467
@@ -168,21 +173,28 @@ Material:
     - _TranslucencyViewDependency: 0
     - _Transparency: 2
     - _UVSec: 0
-    - _WaterDepth: 0.44
-    - _WaterEdge: 1.75
+    - _WarpIntensity: 0.013
+    - _WaterDepth: 1
+    - _WaterEdge: 2.93
     - _WaterEdgeTile: 4
-    - _WaterEdgeWarpIntensity: 1.79
+    - _WaterEdgeWarpIntensity: 1.04
     - _WaterEdgeWarpTile: 50
     - _WaterEvnSpecularFactor: 1.48
     - _WaterFalloff: -0.5
     - _WaterOpacity: 0.088
     - _WaterSmoothness: 0.33
     - _WaterSpecular: 0
-    - _WaveRadius: 0.38
+    - _WaveFactorIntensity: 0.5
+    - _WaveFactorRadius: 10
+    - _WaveIntensity: 1
+    - _WaveRadius: 0.24
+    - _WaveTile: 5.81
+    - _WaveWarpScale: 0.1
+    - _WaveWidth: 0.516
     - _WavesAmount: 93.73
     - _WavesAmplitude: 0.02
     - _WindQuality: 0
-    - _WrapTile: 0.285
+    - _WrapTile: 0.5
     - _ZWrite: 0
     - __dirty: 0
     m_Colors:
@@ -202,8 +214,9 @@ Material:
     - _TranslucencyColor: {r: 0.72321427, g: 1, b: 0, a: 1}
     - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
+    - _WarpScaleOffset: {r: 1, g: 1, b: 0, a: 0}
     - _WaterColor: {r: 0.05887325, g: 0.46226412, b: 0.38302666, a: 1}
-    - _WaterDownColor: {r: 0.15352438, g: 0.22023824, b: 0.4716981, a: 0}
+    - _WaterDownColor: {r: 0.15686275, g: 0.41176474, b: 0.5921569, a: 0}
     - _WaterEdgeColor: {r: 1, g: 1, b: 1, a: 1}
-    - _WaterTopColor: {r: 0.32156864, g: 1.4980392, b: 1.2862746, a: 1}
+    - _WaterTopColor: {r: 0.78431374, g: 2, b: 1.2470589, a: 1}
   m_BuildTextureStacks: []

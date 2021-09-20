@@ -45,23 +45,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _BigWind: 1
+  _WindAnimToggle: 1
   _WindDensity: 15
   _WindSpeedFloat: 0.35
   _WindTurbulenceFloat: 0.5
   _WindStrengthFloat: 0.119
+  _CloudShadowToggle: 0
   _CloudShadowSize: 0.091
   _CloudShadowRadius: {x: 0.8, y: 0.5}
   _CloudShadowIntensity: 0.75
   _CloudShadowSpeed: 0.65
-  _InteractRadius: 0.85
-  _InteractIntensity: 0.75
-  _FogColor: {r: 0.68182623, g: 0.85303223, b: 0.8867924, a: 1}
-  _FogGlobalDensity: 2.27
-  _FogFallOff: -2.4
-  _FogHeight: 27.7
-  _FogStartDis: 5.35
-  _FogInscatteringExp: 12.9
-  _FogGradientDis: 50
+  _InteractToggle: 1
+  _InteractRadius: 0.2
+  _InteractIntensity: 0.5
+  _InteractHeight: 1
+  _FogToggle: 1
+  _FogColor: {r: 0.7137255, g: 0.95909625, b: 1, a: 1}
+  _FogGlobalDensity: 1
+  _FogHeight: 0
+  _FogStartDistance: 13.06
+  _FogInscatteringExp: 1
+  _FogGradientDistance: 50
 --- !u!82 &1607261687
 AudioSource:
   m_ObjectHideFlags: 0
