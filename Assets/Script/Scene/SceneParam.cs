@@ -22,10 +22,10 @@ public class SceneParam : MonoBehaviour
 
     //风力动画参数
     public bool _WindAnimToggle;
-    [Range(1.0f, 50.0f)] public float _WindDensity = 20.0f;
-    [Range(0.0f, 1.0f)] public float _WindSpeedFloat = 0.0f;
-    [Range(0.0f, 1.0f)] public float _WindTurbulenceFloat = 0.0f;
-    [Range(0.0f, 1.0f)] public float _WindStrengthFloat = 0.0f;
+    [Range(1.0f, 50.0f)] public float _WindDensity = 15.0f;
+    [Range(0.0f, 1.0f)] public float _WindSpeedFloat = 0.35f;
+    [Range(0.0f, 1.0f)] public float _WindTurbulenceFloat = 0.5f;
+    [Range(0.0f, 1.0f)] public float _WindStrengthFloat = 0.1f;
     private void WindParam()
     {
         if (_WindAnimToggle == true)
@@ -48,10 +48,10 @@ public class SceneParam : MonoBehaviour
 
     //云阴影参数
     public bool _CloudShadowToggle;
-    [Range(0.0f, 1.0f)] public float _CloudShadowSize = 0.0f;
-    public Vector2 _CloudShadowRadius;
-    [Range(0.0f, 1.0f)] public float _CloudShadowIntensity = 1.0f;
-    [Range(0.0f, 5.0f)] public float _CloudShadowSpeed = 1.0f;
+    [Range(0.0f, 1.0f)] public float _CloudShadowSize = 0.1f;
+    public Vector2 _CloudShadowRadius = new Vector2(0.8f,0.5f);
+    [Range(0.0f, 1.0f)] public float _CloudShadowIntensity = 0.75f;
+    [Range(0.0f, 5.0f)] public float _CloudShadowSpeed = 0.65f;
     private void CloudShadow()
     {
         if (_CloudShadowToggle == true)
@@ -72,9 +72,9 @@ public class SceneParam : MonoBehaviour
     }
     //草地交互参数
     public bool _InteractToggle;
-    [Range(0.0f, 5.0f)] public float _InteractRadius;
-    [Range(0.0f, 1.0f)] public float _InteractIntensity;
-    [Range(0.0f, 10.0f)] public float _InteractHeight = 1.5f;
+    [Range(0.0f, 5.0f)] public float _InteractRadius = 0.2f;
+    [Range(0.0f, 1.0f)] public float _InteractIntensity = 0.5f;
+    [Range(0.0f, 10.0f)] public float _InteractHeight = 1.0f;
     private void GrassInteract()
     {
         if (_InteractToggle == true)
@@ -95,8 +95,8 @@ public class SceneParam : MonoBehaviour
     //雾效
 
     public bool _FogToggle;
-    public Color _FogColor;//雾的颜色
-    public float _FogGlobalDensity = 2.0f;//雾的密度
+    public Color _FogColor = new Color(1.0f,1.0f,1.0f,1.0f);//雾的颜色
+    public float _FogGlobalDensity = 1.0f;//雾的密度
     public float _FogHeight = 0.0f;//雾的高度
     public float _FogStartDistance = 10.0f;//雾的开始距离
     public float _FogInscatteringExp = 1.0f;//雾散射指数

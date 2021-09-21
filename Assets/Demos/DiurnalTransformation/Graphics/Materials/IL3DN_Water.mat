@@ -146,7 +146,7 @@ Material:
     - _Glossiness: 0.19
     - _GlossyReflections: 1
     - _IndirectionFactor: 0.82
-    - _LightFactor: 0.633
+    - _LightFactor: 0.338
     - _Metallic: 0.398
     - _Mode: 3
     - _NormalIntensity: 0.467
@@ -172,9 +172,10 @@ Material:
     - _Tiling: 0.05
     - _TranslucencyViewDependency: 0
     - _Transparency: 2
+    - _TransparentRadius: 0.89
     - _UVSec: 0
     - _WarpIntensity: 0.013
-    - _WaterDepth: 1
+    - _WaterDepth: 0.77
     - _WaterEdge: 2.93
     - _WaterEdgeTile: 4
     - _WaterEdgeWarpIntensity: 1.04
@@ -184,10 +185,10 @@ Material:
     - _WaterOpacity: 0.088
     - _WaterSmoothness: 0.33
     - _WaterSpecular: 0
-    - _WaveFactorIntensity: 0.5
+    - _WaveFactorIntensity: 0.215
     - _WaveFactorRadius: 10
     - _WaveIntensity: 1
-    - _WaveRadius: 0.24
+    - _WaveRadius: 0.713
     - _WaveTile: 5.81
     - _WaveWarpScale: 0.1
     - _WaveWidth: 0.516
@@ -216,7 +217,7 @@ Material:
     - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
     - _WarpScaleOffset: {r: 1, g: 1, b: 0, a: 0}
     - _WaterColor: {r: 0.05887325, g: 0.46226412, b: 0.38302666, a: 1}
-    - _WaterDownColor: {r: 0.15686275, g: 0.41176474, b: 0.5921569, a: 0}
+    - _WaterDownColor: {r: 0.13394447, g: 0.5509863, b: 0.6603774, a: 0}
     - _WaterEdgeColor: {r: 1, g: 1, b: 1, a: 1}
-    - _WaterTopColor: {r: 0.78431374, g: 2, b: 1.2470589, a: 1}
+    - _WaterTopColor: {r: 0.5882353, g: 1.4980392, b: 0.9411765, a: 1}
   m_BuildTextureStacks: []

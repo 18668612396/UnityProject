@@ -8,6 +8,7 @@ Shader "Custom/WaterShader"
         _LightFactor("_LightFactor",Range(0.0,1.0)) = 0.0
         _WaterDepth("WaterDepth",float) = 0.0
         [HDR]_WaterTopColor("WaterTopColor",Color) = (1.0,1.0,1.0,1.0)
+        _TransparentRadius("_TransparentRadius",Range(0.0,1.0)) = 0.0
         _WaterDownColor("WaterDownColor",Color) = (0.0,0.0,0.0,0.0)
         [Space(50)]
         _WaveRadius("_WaveRadius",Range(0.0,1.0)) = 0.0
@@ -56,6 +57,7 @@ Shader "Custom/WaterShader"
         uniform float _WaterDepth;
         uniform float4 _WaterTopColor;
         uniform float4 _WaterDownColor;
+        uniform float _TransparentRadius;
 
         uniform float _WaveRadius;
         uniform float _WaveTile;
@@ -114,7 +116,8 @@ Shader "Custom/WaterShader"
                 //计算主光源漫反射
                 float3 Albedo = tex2Dproj(_GrabTexture,i.scrPos);
                 float DepthFactor = DEPTH_COMPARE(i,_WaterDepth);
-                float3 lightDiffuse = lerp(_WaterDownColor ,_WaterTopColor* Albedo,DepthFactor) ;
+                float waterTopFactor = smoothstep(_TransparentRadius,1.0,DepthFactor);
+                float3 lightDiffuse = lerp(_WaterDownColor ,lerp(_WaterTopColor,1,waterTopFactor)* Albedo,DepthFactor) ;
                 //计算主光源镜面反射
                 float waveFactor = distance(cameraPos,i.worldPos);
                 waveFactor = 1 - saturate((1 - waveFactor + _WaveFactorRadius) * i.uv.y * _WaveFactorIntensity);

@@ -165,5 +165,5 @@ Shader "Custom/GrassShader"
         
     }
 
-    //CustomEditor "GrassShaderGUI"
+    CustomEditor "GrassShaderGUI"
 }
