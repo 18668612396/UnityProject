@@ -219,5 +219,5 @@ Material:
     - _WaterColor: {r: 0.05887325, g: 0.46226412, b: 0.38302666, a: 1}
     - _WaterDownColor: {r: 0.13394447, g: 0.5509863, b: 0.6603774, a: 0}
     - _WaterEdgeColor: {r: 1, g: 1, b: 1, a: 1}
-    - _WaterTopColor: {r: 0.5882353, g: 1.4980392, b: 0.9411765, a: 1}
+    - _WaterTopColor: {r: 0.29411766, g: 0.7490196, b: 0.47058824, a: 1}
   m_BuildTextureStacks: []
