@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Unlit_Lava
+  m_Shader: {fileID: 4800000, guid: b1097fb8315731e4cb81145c97f6872a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 30a800284024089408e04f44f2330d47, type: 3}
+        m_Scale: {x: 3, y: 3}
+        m_Offset: {x: 0, y: 0.02}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 8f2b9b0b6a3100d43a431015b1fbc6f7, type: 3}
+        m_Scale: {x: 5, y: 5}
+        m_Offset: {x: 0, y: 0.5}
+    m_Ints: []
+    m_Floats:
+    - _LavaStrength: 1.5
+    - _LavaWarpStrength: 0.025
+    - _NoisePow: 3.6
+    - _VertexColorRange: 0.07
+    m_Colors:
+    - _LavaHighColor: {r: 1.39772, g: 0.26344463, b: 0, a: 1}
+    - _NoiseDir: {r: 0, g: 0.005, b: 0, a: 1}
+    - _NoiseScaleAndSpeed: {r: 5, g: 5, b: 0, a: 0.2}
+    - _RockColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
